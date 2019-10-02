@@ -141,7 +141,7 @@ token identifier(int row, int& idx ,string line){
             if( IsSpace(line[j]) ){
                 j++; 
                 continue; 
-            }
+            }     
             if( IsLetter(line[j]) ){
                 str += line[j]; 
                 j++; 
@@ -149,7 +149,8 @@ token identifier(int row, int& idx ,string line){
             }
             
             if( line[j] == END or !IsLetter(line[j])){
-                token t;
+                j++;
+                token t("", row, j);
                 t.NotValid("No valid"); 
                 return t; 
             }
@@ -157,7 +158,15 @@ token identifier(int row, int& idx ,string line){
         }
         if(str.length() > 0 ){
             if( IsSpace(line[j]) or line[j] == END or IsOperatorChar(line[j])){
-                token t("tk_identifier", str, row, idx); 
+                if(str.compare("mod") == 0) {
+                   token t(operators["mod"], row, j); 
+                   return t;
+                }
+                if(keywords.find(str) != keywords.end() ){
+                    token t(str, row ,j ); 
+                    return t; 
+                }
+                token t("tk_identifier", str, row, j); 
                 return t;
             }
             if( IsLetter(line[j]) or IsDigit(line[j]) or line[j] == '_'){
@@ -166,7 +175,8 @@ token identifier(int row, int& idx ,string line){
                 continue; 
             }
             if( !IsLetter( line[j]) ){
-                token t; // Sintaxis error
+                j++; 
+                token t("", row, j); // Sintaxis error
                 t.NotValid("Sintaxis Error"); 
                 return t; 
             }
@@ -177,12 +187,19 @@ void Lex(vector<string>& lines) {
     auto i = lines.begin(); 
 	for (int k = 0 ; i != lines.end(); ++i, k++) {
 		int j = 0;		
-        token t = identifier(k, j, *i);
-        cout << t.toString();
+        string str = *i; 
+        while(j < str.length()){
+            token t = identifier(k, j, *i);
+            j = t.col ; 
+            cout << t.toString() << " "<<j << " " << str.length();
+        }
+        cout << endl; 
+
 	}	
 	
 }
 int main() {
+    init(); 
 	freopen("archivo.in", "r", stdin);
 	string line;
 	vector<string> lines;
