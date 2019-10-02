@@ -178,6 +178,7 @@ token identifier(int row, int& idx ,string line){
                 j++; 
                 token t("", row, j); // Sintaxis error
                 t.NotValid("Sintaxis Error"); 
+
                 return t; 
             }
         }
