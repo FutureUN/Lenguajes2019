@@ -1,12 +1,23 @@
 #include<bits/stdc++.h>
 using namespace std;
+
+bool IsLetter(char c) {
+	return islower(c) || isupper(c);
+}
+
+bool IsDigit(char c) {
+	return c - '0' >= 0 && c - '0' < 10;
+}
+
+
 string IntToStr(int a) {
 	stringstream ss;
 	ss << a;
 	string ret;
 	ss >> ret;
 	return ret;
-}	
+}
+
 struct token {
 	bool extra;
 	string id, lex;
