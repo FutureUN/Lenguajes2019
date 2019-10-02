@@ -1,4 +1,5 @@
 #include<bits/stdc++.h>
+#include <string> 
 #define END '\0'
 using namespace std;
 
@@ -79,6 +80,7 @@ void init() {
 	
 
 	operators[":="] = "tk_assig";
+	operators["="] = "tk_equal";
 	operators["."] = "tk_dot";
 	operators[":"] = "tok_dots";	
 	operators["+"] = "tk_add";	
@@ -94,6 +96,8 @@ void init() {
 	operators[";"] = "tk_semicolon";	
 	operators["->"] = "tk_execute";	
 	operators["[]"] = "tk_separa";
+	operators["<"] = "tk_less";
+	operators[">"] = "tk_more";
 }
 
 
@@ -133,8 +137,99 @@ void Lex(vector<string>& lines) {
 
 	for (int i=0; i<(int)lines.size(); i++) {
 		int j = 0;		
+		cout << lines[i] << " \n"; 
 	}	
 	
+}
+void IsString(string line,int row){
+	int i = 0; 
+	int len = 0 ; 
+	int state = 0 ; 
+	int start; 
+	char act = line[i]; 
+	string s;
+	while (act != END ){
+		if (act == '\"' ){
+			if ( state == 0 ) {
+				state = 1;
+				start = i ; }
+			else if (state == 1 ) {
+				s = line.substr(start,len+1);		
+				len= 0; 
+				state = 0 ; 
+				token t("tk_string" , s , row , start);
+				cout<< t.toString() << " \n"; 
+			} 
+		}
+		i++;		
+		act = line[i];
+		if (state == 1) len++; 
+	}
+	if ( state == 1) {
+	token t; 
+	t.NotValid("LEXIC ERROR (0,"+IntToStr(start)+")");
+	cout << t.msg << " \n";  }
+}
+void isOp(string line, int row){
+	int i = 0 ; 
+	char act = line[i];
+	string acts = line.substr(i,1); 
+	token t; 
+	while (act != END){
+		if (IsOperatorChar(act)== false && IsLetter(act) == false && IsDigit(act) == false && act != ' ' && act != '#'  && act!= '\"' && act!= '?'){
+		// es error xd 		
+			cout << "BREAK " << act << " \n" ; 
+			token t; 
+			t.NotValid("LEXIC ERROR (0, " + IntToStr(i)+ ")" );
+			break;
+		}else if (IsOperatorChar(act)){
+			token t (operators[acts],row,i);
+			if ( act == ':'){
+					if(line[i+1] == '='){	
+						token t(operators[":="], row, i );
+						i++;}
+			}
+			if ( act == '-'){
+				if ( line[i+1] == '>' ){
+					token t(operators["->"],row, i); 
+					i++; 				
+				}			
+			}
+			if (act == '[' ){
+				if (line[i+1]== ']' ){	
+					token t(operators["[]"],row, i); 
+					i++; 					
+				}			
+			}
+			if (act == '!' ){
+				if (line[i+1]== '=' ){	
+					token t(operators["!="],row, i); 
+					i++; 					
+				}else{//token de que esta mal 	
+					token t; 
+					t.NotValid("LEXIC ERROR (0, " + IntToStr(i)+ ")" );
+					break;
+				}			
+			}
+			if (act == '>' ){
+				if (line[i+1]== '=' ){	
+					token t(operators[">="],row, i); 
+					i++; 					
+				}			
+			}
+			if (act == '<' ){
+				if (line[i+1]== '=' ){	
+					token t(operators["<="],row, i); 
+					i++; 					
+				}			
+			}
+			cout << t.toString() << '\n';
+		}
+		i++; 
+		act = line[i];
+		acts = line[i]; 
+	}
+
 }
 int main() {
 	freopen("archivo.in", "r", stdin);
@@ -142,8 +237,8 @@ int main() {
 	vector<string> lines;
 	while(getline(cin, line)) lines.push_back(line);
 	Lex(lines);
-
-
-
-
+	init();
+	for ( int i = 0 ; i < lines.size() ; i ++){
+		IsString(lines[i],i);
+		isOp(lines[i],i); }
 }
