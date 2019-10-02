@@ -97,6 +97,8 @@ void init() {
 }
 
 
+
+
 struct token {
 	bool extra, isValid;
 	string id, lex, msg;
@@ -119,6 +121,7 @@ struct token {
 		if (extra) ret+=lex+",";
 		ret += IntToStr(row) + ",";
 		ret += IntToStr(col) + ">";	
+        ret += msg; 
 		return ret;
 	}	
 	void NotValid(string _msg) {
@@ -129,10 +132,53 @@ struct token {
 
 
 
-void Lex(vector<string>& lines) {
 
-	for (int i=0; i<(int)lines.size(); i++) {
+token identifier(int row, int& idx ,string line){
+    int j = idx;
+    string str = "";  
+    while(true){
+        if(str.length() == 0 ){
+            if( IsSpace(line[j]) ){
+                j++; 
+                continue; 
+            }
+            if( IsLetter(line[j]) ){
+                str += line[j]; 
+                j++; 
+                continue; 
+            }
+            
+            if( line[j] == END or !IsLetter(line[j])){
+                token t;
+                t.NotValid("No valid"); 
+                return t; 
+            }
+            
+        }
+        if(str.length() > 0 ){
+            if( IsSpace(line[j]) or line[j] == END or IsOperatorChar(line[j])){
+                token t("tk_identifier", str, row, idx); 
+                return t;
+            }
+            if( IsLetter(line[j]) or IsDigit(line[j]) or line[j] == '_'){
+                str += line[j]; 
+                j++; 
+                continue; 
+            }
+            if( !IsLetter( line[j]) ){
+                token t; // Sintaxis error
+                t.NotValid("Sintaxis Error"); 
+                return t; 
+            }
+        }
+    }
+}
+void Lex(vector<string>& lines) {
+    auto i = lines.begin(); 
+	for (int k = 0 ; i != lines.end(); ++i, k++) {
 		int j = 0;		
+        token t = identifier(k, j, *i);
+        cout << t.toString();
 	}	
 	
 }
@@ -142,8 +188,5 @@ int main() {
 	vector<string> lines;
 	while(getline(cin, line)) lines.push_back(line);
 	Lex(lines);
-
-
-
 
 }
