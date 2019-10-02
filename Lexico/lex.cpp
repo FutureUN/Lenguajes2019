@@ -166,8 +166,8 @@ token identifier(int row, int& idx ,string line){
                 continue; 
             }
             if( !IsLetter( line[j]) ){
-                token t; // Sintaxis error
-                t.NotValid("Sintaxis Error"); 
+                token t; // Lexical error
+                t.NotValid("Lexical Error"); 
                 return t; 
             }
         }
