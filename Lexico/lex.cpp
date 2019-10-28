@@ -1,3 +1,14 @@
+/* Analizador lexico desarrollado por
+		*Juan Sebasitan Chaves 
+		*Jimmy Pulido
+		*Laura Santos
+
+	Curso: Lenguajes de programacion 2019-02
+	Profesor: Felipe Restrepo
+
+*/
+
+
 #include<bits/stdc++.h>
 #define END '\0'
 using namespace std;
@@ -11,13 +22,13 @@ bool IsDigit(char c) {
 }
 
 bool IsOperatorChar(char c) {
-	string chars = ":=.+/*-[],();->!<";
+	string chars = ":=.+/*-[],();->!<%{}";
 	for (auto ch : chars) if (c == ch) return true;
 	return false;
 }
 
 bool IsSpace(char c) {
-	return c == ' ' || c == '\t';
+	return c == ' ' || c == '\t' ;
 }
 
 string IntToStr(int a) {
@@ -52,15 +63,16 @@ void init() {
 	keywords.insert("import");	
 	keywords.insert("in");	
 	keywords.insert("int");	
-	keywords.insert("ni");	
-	keywords.insert("op");	
-	keywords.insert("do");	
+	keywords.insert("ni");			
 	keywords.insert("od");	
+	keywords.insert("op");
+	keywords.insert("or");
 	keywords.insert("param");	
 	keywords.insert("proto");	
 	keywords.insert("proc");	
 	keywords.insert("procedure");	
 	keywords.insert("process");	
+	keywords.insert("read");
 	keywords.insert("real");	
 	keywords.insert("recdata");	
 	keywords.insert("receive");	
@@ -76,24 +88,42 @@ void init() {
 	keywords.insert("while");	
 	keywords.insert("write");	
 	keywords.insert("writes");	
+	keywords.insert("next");
+	keywords.insert("string");
+	keywords.insert("reply");
+	keywords.insert("destroy");
+	keywords.insert("bool");
+	keywords.insert("char");
+	keywords.insert("col");
 	
 
 	operators[":="] = "tk_assig";
+	operators[":=:"] = "tk_swap";
+	operators["!="] = "tk_different";
+	operators["="] = "tk_equal";
 	operators["."] = "tk_dot";
-	operators[":"] = "tok_dots";	
+	operators["..."] = "tk_triple_dot";
+	operators[":"] = "tk_colon";	
 	operators["+"] = "tk_add";	
-	operators["/"] = "tok_div";	
-	operators["mod"] = "tok_mod";	
+	operators["/"] = "tk_div";	
+	operators["mod"] = "mod";	
 	operators["*"] = "tk_multi";	
-	operators["-"] = "substract";	
-	operators["["] = "tk_bracket_l";	
-	operators["]"] = "tk_bracket_r";	
+	operators["-"] = "tk_substract";	
+	operators["["] = "tk_brace_l";	
+	operators["]"] = "tk_brace_r";	
 	operators[","] = "tk_coma";	
 	operators["("] = "tk_parent_l";	
 	operators[")"] = "tk_parent_r";	
 	operators[";"] = "tk_semicolon";	
 	operators["->"] = "tk_execute";	
 	operators["[]"] = "tk_separa";
+	operators["<"] = "tk_lesser_tham";
+	operators[">"] = "tk_great_than";
+	operators["<="] = "tk_lesser_eq_than";
+	operators[">="] = "tk_greater_eq_than";
+	operators["%"] = "tk_percent";
+	operators["{"] = "tk_brack_l";
+	operators["}"] = "tk_brack_r";
 }
 
 
@@ -101,7 +131,10 @@ struct token {
 	bool extra, isValid;
 	string id, lex, msg;
 	int row, col;
-	token(){}
+	token(){
+		isValid = true;
+		id = lex = msg = "";
+	}
 		
 	token(string _id, string _lex, int _row, int _col) : 
 		id(_id), lex(_lex), row(_row), col(_col) {
@@ -114,33 +147,207 @@ struct token {
 		extra = false;
 		isValid = true;
 	}
+
+	token(int _row, int _col) : row(_row), col(_col){
+		isValid = false;	
+	}
 	string toString() {
+		if (!isValid) return ">>>Error lexico(linea:"+IntToStr(row)+",posicion:"+IntToStr(col)+")";
 		string ret = "<" + id + ",";
 		if (extra) ret+=lex+",";
 		ret += IntToStr(row) + ",";
 		ret += IntToStr(col) + ">";	
 		return ret;
 	}	
-	void NotValid(string _msg) {
-		isValid = false;
-		msg = _msg;
-	}
+	
 };
-
 
 
 void Lex(vector<string>& lines) {
 
 	for (int i=0; i<(int)lines.size(); i++) {
-		int j = 0;		
+		token tok;
+		int j=0;
+		//cout << i << endl;
+
+		while (j<(int)lines[i].size()) {	
+			string line = lines[i];
+			int row = i+1;
+			int col = j+1;
+			if (line[j] == END || line[j] == '#') {
+				break;	
+			}	
+			if (IsSpace(line[j])) {
+				j++;
+				continue;
+			} 
+			string str = "";
+
+			// Encontro -, chequear si es negativo
+			if (line[j] == '-') {	
+			
+				if(IsDigit(line[j+1])) {
+					if (j==0 || IsSpace(line[j-1])) {
+						j++;
+						str = "-";
+					}
+				}
+			} 
+			
+
+			// Encontro digito
+			if (IsDigit(line[j])) {
+				while(IsDigit(line[j])) {
+					str += line[j];
+					j++;
+				}	
+				if ( line[j] != END && line[j] == '.' && IsDigit(line[j+1])) {
+					str+=".";
+					j++;
+					while (IsDigit(line[j])) {
+						str += line[j];
+						j++;
+					}
+				}
+				
+				tok =token("tk_num", str, row, col);
+				cout <<tok.toString() << endl;
+
+				if (IsLetter(line[j])){
+					tok = token(row, j+1);
+					cout << tok.toString() << "\n";
+					return;
+				}
+				continue;
+			}
+
+			// Encontro letra
+			if( IsLetter(line[j]) ){
+                while(IsLetter(line[j]) or IsDigit(line[j]) or line[j] == '_'){
+					str += line[j]; 
+					j++; 
+					continue; 
+				}
+				if(str.compare("mod") == 0) {
+					token t(operators["mod"], row, col); 
+					cout <<t.toString() << endl;
+					continue;
+				}
+				if(keywords.find(str) != keywords.end() ){
+					token t(str, row ,col ); 
+					cout <<t.toString() << endl;
+					continue; 
+				}
+				token t("tk_id", str, row, col); 
+				cout << t.toString() << endl;
+				continue;
+			}
+		
+			// Encontro " puede ser una string
+			int state = 0;
+			if (line[j] == '\"' ){
+				str += line[j];
+				j++;
+				while(line[j] != END && line[j] != '\"') {
+					str += line[j];
+					j++;
+				}
+				if (line[j] == END) {
+					tok = token(row, col);
+					cout << tok.toString() << "\n";
+					return;
+				}else {
+					str += line[j];
+					j++;
+					token t("tk_string" , str, row , col);
+					cout<< t.toString() << " \n"; 
+					continue;
+				}
+			}
+			
+
+			// Encontro caracter de operador
+			char act = line[j];
+			string acts = "";
+			acts += act;
+			if (IsOperatorChar(act)){
+				token t;
+				j++;
+				if ( act == '.'){
+					if (line[j] == '.' && line[j+1] == '.'){
+					    acts += "..";
+					    j +=2;
+					}
+				}
+				if ( act == ':'){
+					if(line[j] == '='){
+						acts += line[j];	
+						j++;
+						if (line[j] == ':') {
+						    acts+=line[j];
+						    j++;
+						}
+					}
+				}
+				if ( act == '-'){
+					if ( line[j] == '>' ){
+						acts += line[j];
+						j++; 				
+					}			
+				}
+				if (act == '[' ){
+					if (line[j]== ']' ){	
+						acts += line[j];
+						j++; 					
+					}			
+				}
+				if (act == '!' ){
+					if (line[j]== '=' ){	
+						acts += line[j];
+						j++;					
+					}else{
+						t = token(row, col);
+						cout << t.toString() << "\n";
+						return;
+					
+					}			
+				}
+				if (act == '>' ){
+					if (line[j]== '=' ){	
+						acts += line[j];
+						j++;					
+					}			
+				}
+				if (act == '<' ){
+					if (line[j]== '=' ){	
+						acts += line[j];
+						j++;					
+					}			
+				}
+				t = token(operators[acts], row, col);
+				cout << t.toString() << '\n';
+				continue;
+			}
+
+			// Nunca encontro caracter valido, error lexico
+			tok = token(row, j+1);
+			cout << line[j] << endl;
+			cout << tok.toString() << "\n";
+			return;
+		
+		}
+
 	}	
 	
 }
+
 int main() {
-	freopen("archivo.in", "r", stdin);
+//	freopen("archivo.in", "r", stdin);
+	freopen("archivo.out", "w", stdout);
+	init();
 	string line;
 	vector<string> lines;
-	while(getline(cin, line)) lines.push_back(line);
+	while(getline(cin, line)) {lines.push_back(line);}
 	Lex(lines);
 
 
