@@ -13,6 +13,7 @@
 
 #include<bits/stdc++.h>
 #define END '\0'
+#define DEBUG 1
 using namespace std;
 
 bool IsLetter(char c) {
@@ -52,7 +53,8 @@ void initGramar() {
 	if (myfile.is_open()) {
 		while (!myfile.eof()) {
 			getline(myfile, line);
-			if (line.size() == 0) continue;
+			if (line.size() == 0 ) continue;
+			if (line == "EOFxd") break;
 
 			stringstream ss(line);
 			string key, arrow;
@@ -64,6 +66,7 @@ void initGramar() {
 			grammar.push_back({key, terms});
 		}
 	}	
+	myfile.close();
 	for (auto it : grammar) {
 		cout << it.first << " ->";
 		for (auto term : it.second) {
@@ -106,9 +109,16 @@ map <int, set<string>> predPerRule;
 void UnionSet(set<string> &s1, set<string> &s2) {
 	for (auto it : s2) s1.insert(it);
 }
-
+bool visCycle[1000];
 set<string> GeneratePrimeros(int idx) {
 	if (visitedRule[idx]) return primerosPerRule[idx];
+cout << idx << " " << visitedRule[idx] <<  endl;
+	if (visCycle[idx]) {
+		cout << "cycle" << endl;
+		exit(-1);
+	}
+	visCycle[idx] = true;
+	
 	int size_terms = grammar[idx].second.size();
 	set<string> primeros;
 	vector<string> &terms = grammar[idx].second;
@@ -134,7 +144,13 @@ set<string> GeneratePrimeros(int idx) {
 			}
 		}
 	}	
+	visCycle[idx] = false;
 	visitedRule[idx] = true;
+	cout << "primeros " << idx << endl;
+	for (auto it : primeros) {
+		cout << it << " " ;
+	}
+	cout << endl;
 	return primerosPerRule[idx] = primeros;
 }
 
@@ -184,31 +200,27 @@ void GeneratePrimerosCommonRule() {
 }
 
 map<string, bool > visitedCurrentSigRun;
-
 void GenerateSiguientesCommonRule(string nterm) {
 	if (visitedCurrentSigRun[nterm]) {
 		cout << "Autzilio me desmayo ciclo\n";
 		exit(0);
 	
 	}
-	cout << nterm << endl;
 	if (siguientes.count(nterm)) return ;
 	visitedCurrentSigRun[nterm] = true;
 
 	set <string> sig;
 	for (int j=0; j<(int) grammar.size(); j++) {
-		cout << j << endl;
 		int sz = grammar[j].second.size();
 		vector<string> &terms = grammar[j].second;
 		int idx_cur_nterm = -1;
 		for (int k=0; k<sz; k++) {
-			cout << k << endl;
 			if (terms[k] == nterm) {
 				idx_cur_nterm = k;
 				break;
 			}
 		}
-		cout << j << " " << idx_cur_nterm << endl;
+
 		if (idx_cur_nterm != -1) {
 			set <string> tmp_sig = GeneratePrimerosSubrule(j, idx_cur_nterm);
 			if (tmp_sig.find("epsilon") != tmp_sig.end()) {
@@ -226,8 +238,8 @@ void GenerateSiguientesCommonRule(string nterm) {
 }
 
 void GenerateSiguientes() {
+
 	for (int i=0; i<(int) grammar.size(); i++) {
-		cout << i << endl;
 		if (siguientes.count(grammar[i].first) != 0) continue;
 
 		GenerateSiguientesCommonRule(grammar[i].first);
@@ -238,24 +250,42 @@ void GenerateSiguientes() {
 }
 
 void GeneratePredPerRule() {
+
 	for (int i=0; i<(int) grammar.size(); i++) {
 		set <string> pred;
-		if (primerosPerRule[i].find("epsilon") != primerosPerRule[i].end) {
-			UnionSet(pred, primerosPerRule[i]);
+		UnionSet(pred, primerosPerRule[i]);
+		if (primerosPerRule[i].find("epsilon") != primerosPerRule[i].end()) {
 			pred.erase(pred.find("epsilon"));
-			UnionSet(pred, siguientes[primerosPerRule[i]]);
+			UnionSet(pred, siguientes[grammar[i].first]);
 		}	
+		predPerRule[i] = pred;
 	}
 }
 
+void CheckLL1Grammar() {
+
+	map<string, set<string>> predNTerminal;
+
+	for (auto it : predPerRule) {
+		string current = grammar[it.first].first;
+		if (predNTerminal.count(current) == 0) predNTerminal[current] = it.second; 
+		else 	
+			for (auto it2 : it.second) {
+				if (predNTerminal[current].find(it2) != predNTerminal[current].end()) {
+					cout << "Autzilio me desmayo, mas de una prediccion para mismo no terminal autzilio" << endl;
+					exit(-1);
+				}
+				predNTerminal[current].insert(it2);
+		}
+	}
+}
 struct Token {
 	bool extra, isValid;
 	string id, lex, msg;
 	int row, col;
 	Token(){
 		isValid = true;
-		id = lex = msg = "";
-	}
+		id = lex = msg = ""; }
 		
 	Token(string _id, string _lex, int _row, int _col) : 
 		id(_id), lex(_lex), row(_row), col(_col) {
@@ -286,12 +316,10 @@ struct Token {
 };
 
 
-void Lex(vector<string>& lines) {
-
+void Lex(vector<string>& lines) { 
 	for (int i=0; i<(int)lines.size(); i++) {
 		Token tok;
 		int j=0;
-		//cout << i << endl;
 
 		while (j<(int)lines[i].size()) {	
 			string line = lines[i];
@@ -346,7 +374,7 @@ void Lex(vector<string>& lines) {
 
 			// Encontro letra
 			if( IsLetter(line[j]) ){
-        while(IsLetter(line[j]) or IsDigit(line[j]) or line[j] == '_'){
+				while(IsLetter(line[j]) or IsDigit(line[j]) or line[j] == '_'){
 					str += line[j]; 
 					j++; 
 					continue; 
@@ -397,8 +425,8 @@ void Lex(vector<string>& lines) {
 				j++;
 				if ( act == '.'){
 					if (line[j] == '.' && line[j+1] == '.'){
-					    acts += "..";
-					    j +=2;
+							acts += "..";
+							j +=2;
 					}
 				}
 				if ( act == ':'){
@@ -406,8 +434,8 @@ void Lex(vector<string>& lines) {
 						acts += line[j];	
 						j++;
 						if (line[j] == ':') {
-						    acts+=line[j];
-						    j++;
+								acts+=line[j];
+								j++;
 						}
 					}
 				}
@@ -463,30 +491,73 @@ void Lex(vector<string>& lines) {
 	
 }
 
+
+
+void PrintPrimerosPerRule() {
+	cout << "Primeros por regla\n";
+	for (auto it : primerosPerRule) {
+		cout << "primeros de " << it.first << endl << "[ ";
+		for (auto it2 : it.second) {
+			cout << it2 << " , ";
+		}		
+		cout << endl;
+	}
+}
+
+void PrintPrimerosPerNTerm() {
+	cout << "Primeros por no terminal\n";
+	for (auto it : primerosCommonRule) {
+		cout << "primeros de " << it.first << endl << "[ ";
+		for (auto it2 : it.second) {
+			cout << it2 << " , ";
+		}		
+		cout << endl;
+	}
+}
+
+void PrintSiguientes() {
+	cout << "Conjunto de siguientes por regla \n";
+	for (auto it : siguientes) {
+		cout << "siguientes de " << it.first << endl << "[";
+		for (auto it2 : it.second) {
+			cout << it2 << " , ";
+		}
+		cout << "]\n";
+	}
+
+
+}
+
+void PrintPred() {
+	cout << " Conjunto de preduccion por regla \n";
+	for (auto it : predPerRule) {
+		cout << "Prediccion de " << it.first << endl << "[ ";
+		for (auto it2 : it.second) {
+			cout << it2 << " , ";
+		}
+		cout << "]\n";
+	}
+}
+
 int main() {
 //	freopen("archivo.in", "r", stdin);
 //	freopen("archivo.out", "w", stdout);
 	initTokens();
 	initGramar();
 	GeneratePrimerosCommonRule();
-	GenerateSiguientes();
-	for (auto it : primerosPerRule) {
-		cout << "primeros de " << it.first << endl << "[\n";
-		for (auto it2 : it.second) {
-			cout << it2 << " , ";
-		}		
-		cout << endl;
-	}
-	for (auto it : siguientes) {
-		cout << "siguientes de " << it.first << endl << "[\n";
-		for (auto it2 : it.second) {
-			cout << it2 << " , ";
-		}
-		cout << "]\n";
+//	GenerateSiguientes();
+//	GeneratePredPerRule();
+//	CheckLL1Grammar();
+	if (DEBUG) {
+		PrintPrimerosPerNTerm();
+		PrintPrimerosPerRule();
+		PrintSiguientes();
+		PrintPred();
 	}
 	string line;
 	vector<string> lines;
-	while(getline(cin, line)) {lines.push_back(line);}
+
+while(getline(cin, line)) {lines.push_back(line);}
 //	Lex(lines);
 
 
