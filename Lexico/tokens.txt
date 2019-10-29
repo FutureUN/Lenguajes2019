@@ -1,0 +1,79 @@
+af
+body	
+cap	
+call
+class	
+const	
+create	
+do	
+end	
+extend
+fi	
+final	
+fa	
+getarg	
+global	
+if	
+import	
+in	
+int	
+ni			
+od	
+op
+or
+param	
+proto	
+proc	
+procedure	
+process	
+read
+real	
+recdata	
+receive	
+returns	
+resource	
+signat	
+sem	
+send	
+stop	
+to	
+true	
+var	
+while	
+write	
+writes	
+next
+string
+reply
+destroy
+bool
+char
+col
+-----
+:= tk_assig
+:=: tk_swap
+!= tk_different
+= tk_equal
+. tk_dot
+... tk_triple_dot
+: tk_colon
++ tk_add
+/ tk_div
+mod mod	
+* tk_multi	
+- tk_substract	
+[ tk_brace_l	
+] tk_brace_r	
+, tk_coma	
+( tk_parent_l	
+) tk_parent_r	
+; tk_semicolon	
+-> tk_execute	
+[] tk_separa
+< tk_lesser_tham
+> tk_great_than
+<= tk_lesser_eq_than
+>= tk_greater_eq_than
+% tk_percent
+{ tk_brack_l
+} tk_brack_r
