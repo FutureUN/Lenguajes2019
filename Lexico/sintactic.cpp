@@ -99,9 +99,81 @@ void initTokens() {
 
 map <int, bool> visitedRule;
 map <string, set<string>> primerosCommonRule;
+map <string, set<string>> siguientes;
 map <int, set<string>> primerosPerRule;
+map <int, set<string>> predPerRule;
+
+void UnionSet(set<string> &s1, set<string> &s2) {
+	for (auto it : s2) s1.insert(it);
+}
+
+set<string> GeneratePrimeros(int idx) {
+	if (visitedRule[idx]) return primerosPerRule[idx];
+	int size_terms = grammar[idx].second.size();
+	set<string> primeros;
+	vector<string> &terms = grammar[idx].second;
+	for (int i=0; i< size_terms; i++ ) {
+		if (islower(terms[i][0])) {
+			primeros.insert(terms[i]);
+			break;
+		} else {
+			set<string> primeros_inside_rule;
+			for (int j=0; j< (int) grammar.size(); j++) {
+				if ( grammar[j].first == terms[i]) {
+					set<string> tmp = GeneratePrimeros(j);
+					UnionSet(primeros_inside_rule, tmp);
+				}
+			}
+			bool hasEps = primeros_inside_rule.find("epsilon") != primeros_inside_rule.end();
+			if (!hasEps || i == size_terms - 1) {
+				UnionSet(primeros, primeros_inside_rule);
+				break;
+			} else {
+				primeros_inside_rule.erase(primeros_inside_rule.find("epsilon"));
+				UnionSet(primeros, primeros_inside_rule);
+			}
+		}
+	}	
+	visitedRule[idx] = true;
+	return primerosPerRule[idx] = primeros;
+}
+
+set<string> GeneratePrimerosSubrule(int idx_rule, int idx_term) {
+	idx_term ++ ;
+	int size_terms = grammar[idx_rule].second.size();
+	set<string> primeros;
+	if (size_terms == idx_term) {
+		primeros.insert("epsilon");
+		return primeros;	
+	}
+	vector<string> &terms = grammar[idx_rule].second;
+	for (int i=idx_term; i< size_terms; i++ ) {
+		if (islower(terms[i][0])) {
+			primeros.insert(terms[i]);
+			break;
+		} else {
+			set<string> primeros_inside_rule;
+			for (int j=0; j< (int) grammar.size(); j++) {
+				if ( grammar[j].first == terms[i]) {
+					set<string> tmp = GeneratePrimeros(j);
+					UnionSet(primeros_inside_rule, tmp);
+				}
+			}
+			bool hasEps = primeros_inside_rule.find("epsilon") != primeros_inside_rule.end();
+			if (!hasEps || i == size_terms - 1) {
+				UnionSet(primeros, primeros_inside_rule);
+				break;
+			} else {
+				primeros_inside_rule.erase(primeros_inside_rule.find("epsilon"));
+				UnionSet(primeros, primeros_inside_rule);
+			}
+		}
+	}	
+	return primeros;
+}
+
 void GeneratePrimerosCommonRule() {
-	for (int i=0; i<grammar.size(); i++) {
+	for (int i=0; i<(int)grammar.size(); i++) {
 		set<string> primeros = GeneratePrimeros(i);
 		if (primerosCommonRule.count(grammar[i].first) == 0) {
 			primerosCommonRule[grammar[i].first] = primeros;
@@ -110,31 +182,72 @@ void GeneratePrimerosCommonRule() {
 		}
 	}
 }
-void UnionSet(set<string> &s1, set<string> &s2) {
-	for (auto it : s2) s1.insert(it);
-}
-set<string> GeneratePrimeros(int idx) {
-	if (visitedRule[idx]) return primerosPerRule[idx];
-	int size_terms = grammar[idx].second.size();
-	set<string> primeros;
-	vector<string> &terms = grammar[idx].second;
-	for (int i=0; i< size_terms; i++ ) {
-		if (islower(terms[i][0])) {
-			terms.insert(terms[i]);
-			break;
-		} else {
-			set<string> primeros_inside_rule;
-			for (int j=0; j<grammar.size(); j++) {
-				if ( grammar[i].first == term[i]) {
-					set<string> tmp = GeneratePrimeros(j);
-					UnionSet(primeros_inside_rule, tmp);
-				}
-			}
-			bool hasEps = primeros_inside_rule.find("epsilon") != primeros_inside_rule::end();
-		}
-	}	
+
+map<string, bool > visitedCurrentSigRun;
+
+void GenerateSiguientesCommonRule(string nterm) {
+	if (visitedCurrentSigRun[nterm]) {
+		cout << "Autzilio me desmayo ciclo\n";
+		exit(0);
 	
+	}
+	cout << nterm << endl;
+	if (siguientes.count(nterm)) return ;
+	visitedCurrentSigRun[nterm] = true;
+
+	set <string> sig;
+	for (int j=0; j<(int) grammar.size(); j++) {
+		cout << j << endl;
+		int sz = grammar[j].second.size();
+		vector<string> &terms = grammar[j].second;
+		int idx_cur_nterm = -1;
+		for (int k=0; k<sz; k++) {
+			cout << k << endl;
+			if (terms[k] == nterm) {
+				idx_cur_nterm = k;
+				break;
+			}
+		}
+		cout << j << " " << idx_cur_nterm << endl;
+		if (idx_cur_nterm != -1) {
+			set <string> tmp_sig = GeneratePrimerosSubrule(j, idx_cur_nterm);
+			if (tmp_sig.find("epsilon") != tmp_sig.end()) {
+				if (siguientes.count(grammar[j].first) == 0)
+				 	GenerateSiguientesCommonRule(grammar[j].first);
+				UnionSet(sig, siguientes[grammar[j].first]);
+				tmp_sig.erase(tmp_sig.find("epsilon"));
+			}
+			UnionSet(sig, tmp_sig);	
+		}
+	}
+	visitedCurrentSigRun[nterm] = false;
+	siguientes[nterm] = sig;
+
 }
+
+void GenerateSiguientes() {
+	for (int i=0; i<(int) grammar.size(); i++) {
+		cout << i << endl;
+		if (siguientes.count(grammar[i].first) != 0) continue;
+
+		GenerateSiguientesCommonRule(grammar[i].first);
+
+		if (i == 0) siguientes[grammar[i].first].insert("$");
+
+	}
+}
+
+void GeneratePredPerRule() {
+	for (int i=0; i<(int) grammar.size(); i++) {
+		set <string> pred;
+		if (primerosPerRule[i].find("epsilon") != primerosPerRule[i].end) {
+			UnionSet(pred, primerosPerRule[i]);
+			pred.erase(pred.find("epsilon"));
+			UnionSet(pred, siguientes[primerosPerRule[i]]);
+		}	
+	}
+}
+
 struct Token {
 	bool extra, isValid;
 	string id, lex, msg;
@@ -355,6 +468,22 @@ int main() {
 //	freopen("archivo.out", "w", stdout);
 	initTokens();
 	initGramar();
+	GeneratePrimerosCommonRule();
+	GenerateSiguientes();
+	for (auto it : primerosPerRule) {
+		cout << "primeros de " << it.first << endl << "[\n";
+		for (auto it2 : it.second) {
+			cout << it2 << " , ";
+		}		
+		cout << endl;
+	}
+	for (auto it : siguientes) {
+		cout << "siguientes de " << it.first << endl << "[\n";
+		for (auto it2 : it.second) {
+			cout << it2 << " , ";
+		}
+		cout << "]\n";
+	}
 	string line;
 	vector<string> lines;
 	while(getline(cin, line)) {lines.push_back(line);}
