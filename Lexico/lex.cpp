@@ -43,112 +43,54 @@ set<string> keywords;
 map<string, string> operators;
 
 void init() {
-
-	keywords.insert("af");
-	keywords.insert("body");	
-	keywords.insert("cap");	
-	keywords.insert("call");
-	keywords.insert("class");	
-	keywords.insert("const");	
-	keywords.insert("create");	
-	keywords.insert("do");	
-	keywords.insert("end");	
-	keywords.insert("extend");
-	keywords.insert("fi");	
-	keywords.insert("final");	
-	keywords.insert("fa");	
-	keywords.insert("getarg");	
-	keywords.insert("global");	
-	keywords.insert("if");	
-	keywords.insert("import");	
-	keywords.insert("in");	
-	keywords.insert("int");	
-	keywords.insert("ni");			
-	keywords.insert("od");	
-	keywords.insert("op");
-	keywords.insert("or");
-	keywords.insert("param");	
-	keywords.insert("proto");	
-	keywords.insert("proc");	
-	keywords.insert("procedure");	
-	keywords.insert("process");	
-	keywords.insert("read");
-	keywords.insert("real");	
-	keywords.insert("recdata");	
-	keywords.insert("receive");	
-	keywords.insert("returns");	
-	keywords.insert("resource");	
-	keywords.insert("signat");	
-	keywords.insert("sem");	
-	keywords.insert("send");	
-	keywords.insert("stop");	
-	keywords.insert("to");	
-	keywords.insert("true");	
-	keywords.insert("var");	
-	keywords.insert("while");	
-	keywords.insert("write");	
-	keywords.insert("writes");	
-	keywords.insert("next");
-	keywords.insert("string");
-	keywords.insert("reply");
-	keywords.insert("destroy");
-	keywords.insert("bool");
-	keywords.insert("char");
-	keywords.insert("col");
-	
-
-	operators[":="] = "tk_assig";
-	operators[":=:"] = "tk_swap";
-	operators["!="] = "tk_different";
-	operators["="] = "tk_equal";
-	operators["."] = "tk_dot";
-	operators["..."] = "tk_triple_dot";
-	operators[":"] = "tk_colon";	
-	operators["+"] = "tk_add";	
-	operators["/"] = "tk_div";	
-	operators["mod"] = "mod";	
-	operators["*"] = "tk_multi";	
-	operators["-"] = "tk_substract";	
-	operators["["] = "tk_brace_l";	
-	operators["]"] = "tk_brace_r";	
-	operators[","] = "tk_coma";	
-	operators["("] = "tk_parent_l";	
-	operators[")"] = "tk_parent_r";	
-	operators[";"] = "tk_semicolon";	
-	operators["->"] = "tk_execute";	
-	operators["[]"] = "tk_separa";
-	operators["<"] = "tk_lesser_tham";
-	operators[">"] = "tk_great_than";
-	operators["<="] = "tk_lesser_eq_than";
-	operators[">="] = "tk_greater_eq_than";
-	operators["%"] = "tk_percent";
-	operators["{"] = "tk_brack_l";
-	operators["}"] = "tk_brack_r";
+ 	string line;
+  	ifstream myfile ("tokens.txt");
+  	if (myfile.is_open())
+  	{
+			while (! myfile.eof() )
+			{
+				getline (myfile,line);
+				if (line == "-----") break;
+				keywords.insert(line);
+			}
+			while (! myfile.eof() )
+    	{	
+				stringstream ss(line);
+      	getline (myfile,line);
+				string key, value;
+				ss >> key;
+				ss >> value;
+      	operators[key] = value;
+			}
+		}
+    myfile.close(); 
 }
 
 
-struct token {
+struct Token {
 	bool extra, isValid;
 	string id, lex, msg;
 	int row, col;
-	token(){
+	Token(){
 		isValid = true;
 		id = lex = msg = "";
 	}
 		
-	token(string _id, string _lex, int _row, int _col) : 
+	Token(string _id, string _lex, int _row, int _col) : 
 		id(_id), lex(_lex), row(_row), col(_col) {
 		extra = true;
 		isValid = true;
 	}
 	
-	token(string _id, int _row, int _col) : 
+	Token(string _id, int _row, int _col) : 
 		id(_id), row(_row), col(_col) {
 		extra = false;
 		isValid = true;
 	}
+	
+	~Token() {}
 
-	token(int _row, int _col) : row(_row), col(_col){
+	Token(int _row, int _col) : row(_row), col(_col){
 		isValid = false;	
 	}
 	string toString() {
@@ -166,7 +108,7 @@ struct token {
 void Lex(vector<string>& lines) {
 
 	for (int i=0; i<(int)lines.size(); i++) {
-		token tok;
+		Token tok;
 		int j=0;
 		//cout << i << endl;
 
@@ -210,11 +152,11 @@ void Lex(vector<string>& lines) {
 					}
 				}
 				
-				tok =token("tk_num", str, row, col);
+				tok =	 Token("tk_num", str, row, col);
 				cout <<tok.toString() << endl;
 
 				if (IsLetter(line[j])){
-					tok = token(row, j+1);
+					tok = Token(row, j+1);
 					cout << tok.toString() << "\n";
 					return;
 				}
@@ -223,28 +165,27 @@ void Lex(vector<string>& lines) {
 
 			// Encontro letra
 			if( IsLetter(line[j]) ){
-                while(IsLetter(line[j]) or IsDigit(line[j]) or line[j] == '_'){
+        while(IsLetter(line[j]) or IsDigit(line[j]) or line[j] == '_'){
 					str += line[j]; 
 					j++; 
 					continue; 
 				}
 				if(str.compare("mod") == 0) {
-					token t(operators["mod"], row, col); 
-					cout <<t.toString() << endl;
+					tok = Token(operators["mod"], row, col); 
+					cout <<tok.toString() << endl;
 					continue;
 				}
 				if(keywords.find(str) != keywords.end() ){
-					token t(str, row ,col ); 
-					cout <<t.toString() << endl;
+					tok =  Token(str, row ,col ); 
+					cout <<tok.toString() << endl;
 					continue; 
 				}
-				token t("tk_id", str, row, col); 
-				cout << t.toString() << endl;
+				tok = Token("tk_id", str, row, col); 
+				cout << tok.toString() << endl;
 				continue;
 			}
 		
 			// Encontro " puede ser una string
-			int state = 0;
 			if (line[j] == '\"' ){
 				str += line[j];
 				j++;
@@ -253,14 +194,14 @@ void Lex(vector<string>& lines) {
 					j++;
 				}
 				if (line[j] == END) {
-					tok = token(row, col);
+					tok = Token(row, col);
 					cout << tok.toString() << "\n";
 					return;
 				}else {
 					str += line[j];
 					j++;
-					token t("tk_string" , str, row , col);
-					cout<< t.toString() << " \n"; 
+					tok = Token("tk_string" , str, row , col);
+					cout<< tok.toString() << " \n"; 
 					continue;
 				}
 			}
@@ -271,7 +212,7 @@ void Lex(vector<string>& lines) {
 			string acts = "";
 			acts += act;
 			if (IsOperatorChar(act)){
-				token t;
+				Token t;
 				j++;
 				if ( act == '.'){
 					if (line[j] == '.' && line[j+1] == '.'){
@@ -306,8 +247,8 @@ void Lex(vector<string>& lines) {
 						acts += line[j];
 						j++;					
 					}else{
-						t = token(row, col);
-						cout << t.toString() << "\n";
+						tok = Token(row, col);
+						cout << tok.toString() << "\n";
 						return;
 					
 					}			
@@ -324,13 +265,13 @@ void Lex(vector<string>& lines) {
 						j++;					
 					}			
 				}
-				t = token(operators[acts], row, col);
-				cout << t.toString() << '\n';
+				tok = Token(operators[acts], row, col);
+				cout << tok.toString() << '\n';
 				continue;
 			}
 
 			// Nunca encontro caracter valido, error lexico
-			tok = token(row, j+1);
+			tok = Token(row, j+1);
 			cout << line[j] << endl;
 			cout << tok.toString() << "\n";
 			return;
@@ -343,7 +284,7 @@ void Lex(vector<string>& lines) {
 
 int main() {
 //	freopen("archivo.in", "r", stdin);
-	freopen("archivo.out", "w", stdout);
+//	freopen("archivo.out", "w", stdout);
 	init();
 	string line;
 	vector<string> lines;
