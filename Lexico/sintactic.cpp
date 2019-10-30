@@ -117,7 +117,10 @@ void UnionSet(set<string> &s1, set<string> &s2) {
 
 bool visCycle[1000];
 set<string> GeneratePrimeros(int idx) {
-
+	cout << idx << endl;
+	if(visCycle[idx]) {
+		cout << "cycle " << idx << endl;
+	}
 	if (visitedRule[idx]) return primerosPerRule[idx];
 
  	visCycle[idx] = true;
@@ -249,18 +252,24 @@ void GeneratePredPerRule() {
 void CheckLL1Grammar() {
 
 	map<string, set<string>> predNTerminal;
-
+	bool goot = true;
 	for (auto it : predPerRule) {
 		string current = grammar[it.first].first;
 		if (predNTerminal.count(current) == 0) predNTerminal[current] = it.second; 
 		else 	
 			for (auto it2 : it.second) {
+	
 				if (predNTerminal[current].find(it2) != predNTerminal[current].end()) {
+					good = false;
 					cout << current << " " << it2 << endl;
 					cout << "Autzilio me desmayo, mas de una prediccion para mismo no terminal autzilio" << endl;
 				}
 				predNTerminal[current].insert(it2);
 		}
+	}
+	if (!good) {
+		cout<< "La gramatica ta no good \n";
+		exit(-1);
 	}
 }
 
@@ -540,7 +549,7 @@ void MagicSintac(string nterm)  {
 	if (idRule == -1 ) {
 		cout << nterm  << endl;
 		cout << GetNextToken().row << " " << GetNextToken().col << endl;
-		cout << " Error tisastico, no se encontro " <<  predic << " en el conjunto de prediccion porque tisa no se puede predecir <3\n" << endl;
+		cout << " Error, no se encontro " <<  predic << " en el conjunto de prediccion\n" << endl;
 		exit(-1);
 	} 
 	cout << "Encontro prediccion " <<  predic << " en regla " << idRule << endl;
@@ -592,7 +601,7 @@ void PrintSiguientes() {
 void PrintPred() {
 	cout << " Conjunto de preduccion por regla \n";
 	for (auto it : predPerRule) {
-		cout << "Prediccion de " << it.first << endl << "[ ";
+		cout << "Prediccion de " << it.first << endl  << " " << grammar[it.first].first << "[ ";
 		for (auto it2 : it.second) {
 			cout << it2 << " , ";
 		}
