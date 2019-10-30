@@ -27,7 +27,7 @@ bool IsDigit(char c) {
 }
 
 bool IsOperatorChar(char c) {
-	string chars = ":=.+/*-[],();->!<%{}";
+	string chars = ":=.+/*-[],();->!<%{}|^";
 	for (auto ch : chars) if (c == ch) return true;
 	return false;
 }
@@ -70,12 +70,14 @@ void initGramar() {
 		}
 	}	
 	myfile.close();
+	int i = 0;
 	for (auto it : grammar) {
-		cout << it.first << " ->";
+		cout << i << " " << it.first << " ->";
 		for (auto term : it.second) {
 			cout << " " << term;
 		}
 		cout << endl;
+		i++;
 	}
 }
 
@@ -117,7 +119,6 @@ void UnionSet(set<string> &s1, set<string> &s2) {
 
 bool visCycle[1000];
 set<string> GeneratePrimeros(int idx) {
-	cout << idx << endl;
 	if(visCycle[idx]) {
 		cout << "cycle " << idx << endl;
 	}
