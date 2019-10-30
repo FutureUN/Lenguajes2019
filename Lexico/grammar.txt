@@ -1,15 +1,192 @@
+    INIT -> GLOBALS RESOURCE RESOURCES BODIES
+    GLOBALS -> GLOBAL
+    GLOBALS -> epsilon
+    RESOURCES -> RESOURCE RESOURCES
+    RESOURCES -> epsilon
+    BODIES -> BODY BODIES
+    BODIES -> epsilon
+
+    GLOBAL  -> global  id_token GLOBAL_CONTENT  end
+    RESOURCE -> resource id_token PARAMETERS R_ELEMENTS  END_RESOURCE
+    BODY -> body id_token B_PARAMS R_ELEMENTS END
+    GLOBAL_CONTENT -> CONSTANT SEMICOLON GLOBAL_CONTENT
+    GLOBAL_CONTENT -> TYPE_DEC SEMICOLON GLOBAL_CONTENT
+    GLOBAL_CONTENT -> epsilon
+    R_ELEMENTS -> IMPORT R_ELEMENTS
+    R_ELEMENTS -> EXTEND R_ELEMENTS
+    R_ELEMENTS -> R_DECLARATION SEMICOLON R_ELEMENTS
+    R_ELEMENTS -> STATEMENT R_ELEMENTS
+    R_ELEMENTS -> PROC R_ELEMENTS
+    R_ELEMENTS -> epsilon
+    IMPORT -> import id_token ID_LIST
+    EXTEND -> extend id_token ID_LIST
+    END_RESOURCE -> END
+    END_RESOURCE -> BODY
+    R_DECLARATION  -> CONSTANT
+    R_DECLARATION  -> TYPE_DEC
+    R_DECLARATION -> OP_DECLARATION
+    R_DECLARATION -> VARIABLE
+    CONSTANT -> const id_token := EXPRESSION
+    TYPE_DEC -> type id_token = TYPE
+    OP_DECLARATION  -> op id_token PARAMETERS OP_FUNCTION OP_RETURN
+    VARIABLE -> var  id_token IF_ARRAY  TYPE_DEF ASSIGN_DEC VAR_LIST
+    B_PARAMS -> ( PARAM_LIST )
+    B_PARAMS -> epsilon
+    PARAMETERS -> ( PARAM_LIST )
+    OP_FUNCTION -> { id_token }
+    OP_FUNCTION -> epsilon
+    PARAM_LIST -> id_token IF_ARRAY TYPE_DEF NEXT_PARAM
+    PARAM_LIST -> epsilon
+    NEXT_PARAM -> , id_token IF_ARRAY TYPE_DEF NEXT_PARAM
+    NEXT_PARAM -> epsilon
+    OP_RETURN -> returns id_token TYPE_DEF OP_RETURN_LIST
+    OP_RETURN -> epsilon
+    OP_RETURN_LIST -> , id_token TYPE_DEF OP_RETURN_LIST
+    OP_RETURN_LIST -> epsilon
+    VAR_LIST -> , id_token IF_ARRAY TYPE_DEF ASSIGN_DEC VAR_LIST  
+    VAR_LIST -> epsilon
+
+    IF_ARRAY -> [ EXPRESSION IF_TWO , EXPRESSION IF_TWO ]
+    IF_TWO -> : EXPRESSION
+    IF_TWO -> epsilon 
+    IF_ARRAY -> epsilon
 
 
-E -> T E_P
-E_P -> + T E_P
-E_P -> - T E_P
-E_P -> epsilon
-T -> F T_P
-T_P -> * F T_P
-T_P -> / F T_P
-T_P -> epsilon
-F -> id_token
-F -> tk_num
-F -> ( E )
+    ASSIGN_DEC -> := EXPRESSION
+    ASSIGN_DEC -> epsilon
+    TYPE_DEF -> : TYPE
+    TYPE_DEF -> epsilon
+    END -> end END_P
+    END_P -> id_token
+    END_P -> epsilon
+    SEMICOLON -> ;
+    SEMICOLON -> epsilon
+    ID_LIST -> , id_token ID_LIST
+    ID_LIST -> epsilon
+
+
+
+
+    PROC -> proc id_token PARAMETERS OP_RETURN
+
+    BLOCK -> STATEMENTS
+    STATEMENTS -> STATEMENT STATEMENTS
+    STATEMENTS -> epsilon
+
+    STATEMENT -> SEQUENTIAL
+    STATEMENT -> OP_INVOCATION
+    STATEMENT -> OP_SERVICE
+    STATEMENT -> RSRC_CONTROL
+
+    SEQUENTIAL -> skip
+    SEQUENTIAL -> exit  
+    SEQUENTIAL -> next
+
+    SEQUENTIAL -> if EXPRESSION -> BLOCK fi
+    SEQUENTIAL -> do EXPRESSION -> BLOCK od
+
+    SEQUENTIAL -> fa SEQUENTIAL_FA
+
+    SEQUENTIAL_FA -> IDENTIFIER := EXPRESSION to IDENTIFIER -> BLOCK af
+
+
+
+    SEQUENTIAL  -> IDENTIFIER SEQUENTIAL_P SEMICOLON
+    SEQUENTIAL_P  -> IDEN_LIST := EXPRESSION EXPR_LIST  
+    SEQUENTIAL_P  -> :=: IDENTIFIER
+    SEQUENTIAL_P  -> +:= EXPRESSION
+
+    OP_INVOCATION -> call OPERATION OP_PARAMETERS SEMICOLON
+    OP_INVOCATION -> OPERATION OP_PARAMETERS SEMICOLON
+    OP_INVOCATION -> send OPERATION OP_PARAMETERS SEMICOLON
+
+    OP_SERVICE -> in OPERATION (IDEN_LIST)
+    OP_SERVICE -> receive OPERATION ( IDEN_LIST  )
+    OP_SERVICE -> return
+    OP_SERVICE -> reply
+
+    RSRC_CONTROL -> cap := create resource PARAMETERS
+    RSRC_CONTROL -> destroy cap
+
+
+    OP_PARAMETERS -> ( OP_PARAM_LIST  )
+
+    OP_PARAM_LIST -> IDENTIFIER NEXT_OP_PARAM
+    OP_PARAM_LIST -> epsilon
+    NEXT_OP_PARAM -> , IDENTIFIER NEXT_OP_PARAM
+    NEXT_OP_PARAM -> epsilon
+
+
+    IDEN_LIST -> IDENTIFIER IDEN_LIST_P 
+    IDEN_LIST_P -> epsilon 
+    IDEN_LIST_P -> ,  IDENTIFIER IDEN_LIST_P
+
+    IDENTIFIER -> id_token TOKENATTR
+    IDENTIFIER -> tk_string
+
+    TOKENATTR -> . id_token
+    TOKENATTR -> epsilon
+    TOKENATTR -> [ IDEN_LIST ]
+
+
+    EXPR_LIST -> , Exp EXPR_LIST
+    EXPR_LIST -> epsilon
+
+
+
+    OPERATION -> write
+    OPERATION -> put
+    OPERATION -> puts
+    OPERATION -> read
+    OPERATION -> writes
+    OPERATION -> new  
+
+
+    TYPE -> int
+    TYPE -> string
+    TYPE -> cap id_token
+    TYPE -> real
+    TYPE -> id_token
+    TYPE -> char
+    BOOL_EXP -> id_token
+
+
+
+
+
+    EXPRESSION -> TBool EBool_P
+    EBool_P -> | TBool EBool_P
+    EBool_P -> epsilon
+    TBool -> FBool TBool_P
+    TBool_P -> & FBool TBool_P
+    TBool_P -> epsilon
+    FBool ->  E X
+    X -> OPREL E
+    X -> epsilon
+    FBool -> ~ FBool
+    OPREL -> <=
+    OPREL -> <
+    OPREL -> >=
+    E -> T E_P
+    E_P -> + T E_P
+    E_P -> - T E_P
+    E_P -> epsilon
+    T -> F T_P
+    T_P -> * F T_P
+    T_P -> / F T_P
+    T_P -> % F T_P
+    T_P -> epsilon
+    F -> FP F_P
+    F_P -> ^ FP F_P
+    F_P -> epsilon
+    FP -> id_token IF_ARRAY
+    FP -> tk_num
+    FP -> ( E )
+
+
+
+
+
+
 
 

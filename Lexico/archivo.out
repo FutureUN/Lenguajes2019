@@ -1,341 +1,1159 @@
-[3J[H[2JSTATEMENT -> SEQUENTIAL
-STATEMENT -> OP_INVOCATION
-STATEMENT -> OP_SERVICE
-STATEMENT -> RSRC_CONTROL
-SEQUENTIAL -> skip
-SEQUENTIAL -> exit
-SEQUENTIAL -> next
-SEQUENTIAL -> if BOOL_EXP -> BLOCK SEMICOLON fi
-SEQUENTIAL -> do BOOL_EXP -> BLOCK SEMICOLON od
-SEQUENTIAL -> fa BOOL_EXP -> BLOCK SEMICOLON af
-SEQUENTIAL -> IDENTIFIER SEQUENTIAL_P
-SEQUENTIAL_P -> IDEN_LIST := EXPRESSION EXPR_LIST
-SEQUENTIAL_P -> :=: IDENTIFIER
-OP_INVOCATION -> call OPERATION PARAMETERS
-OP_INVOCATION -> OPERATION PARAMETERS
-OP_INVOCATION -> send OPERATION PARAMETERS
-OP_SERVICE -> in OPERATION (IDENTIFIERS)
-OP_SERVICE -> receive OPERATION ( IDENTIFIERS )
-OP_SERVICE -> return
-OP_SERVICE -> reply
-RSRC_CONTROL -> CAPABILITY := create resource PARAMETERS
-RSRC_CONTROL -> destroy CAPABILITY
-IDEN_LIST -> , IDENTIFIER IDEN_LIST
-IDEN_LIST -> epsilon
-EXPR_LIST -> , EXPRESSION EXPR_LIST
-EXPR_LIST -> epsilon
-BLOCK -> STATEMENTS
-STATEMENTS -> STATEMENT STATEMENTS
-STATEMENTS -> epsilon
-SEMICOLON -> ;
-SEMICOLON -> epsilon
-BOOL_EXP -> bool_exp
-EXPRESSION -> expression
-OPERATION -> operation
-IDENTIFIER -> identifier
-IDENTIFIERS -> identifiers
-EXPR_LIST -> expr_list
+[3J[H[2J0 INIT -> GLOBALS RESOURCE RESOURCES BODIES
+1 GLOBALS -> GLOBAL
+2 GLOBALS -> epsilon
+3 RESOURCES -> RESOURCE RESOURCES
+4 RESOURCES -> epsilon
+5 BODIES -> BODY BODIES
+6 BODIES -> epsilon
+7 GLOBAL -> global id_token GLOBAL_CONTENT end
+8 RESOURCE -> resource id_token PARAMETERS R_ELEMENTS END_RESOURCE
+9 BODY -> body id_token B_PARAMS R_ELEMENTS END
+10 GLOBAL_CONTENT -> CONSTANT SEMICOLON GLOBAL_CONTENT
+11 GLOBAL_CONTENT -> TYPE_DEC SEMICOLON GLOBAL_CONTENT
+12 GLOBAL_CONTENT -> epsilon
+13 R_ELEMENTS -> IMPORT R_ELEMENTS
+14 R_ELEMENTS -> EXTEND R_ELEMENTS
+15 R_ELEMENTS -> R_DECLARATION SEMICOLON R_ELEMENTS
+16 R_ELEMENTS -> STATEMENT R_ELEMENTS
+17 R_ELEMENTS -> PROC R_ELEMENTS
+18 R_ELEMENTS -> epsilon
+19 IMPORT -> import id_token ID_LIST
+20 EXTEND -> extend id_token ID_LIST
+21 END_RESOURCE -> END
+22 END_RESOURCE -> BODY
+23 R_DECLARATION -> CONSTANT
+24 R_DECLARATION -> TYPE_DEC
+25 R_DECLARATION -> OP_DECLARATION
+26 R_DECLARATION -> VARIABLE
+27 CONSTANT -> const id_token := EXPRESSION
+28 TYPE_DEC -> type id_token = TYPE
+29 OP_DECLARATION -> op id_token PARAMETERS OP_FUNCTION OP_RETURN
+30 VARIABLE -> var id_token IF_ARRAY TYPE_DEF ASSIGN_DEC VAR_LIST
+31 B_PARAMS -> ( PARAM_LIST )
+32 B_PARAMS -> epsilon
+33 PARAMETERS -> ( PARAM_LIST )
+34 OP_FUNCTION -> { id_token }
+35 OP_FUNCTION -> epsilon
+36 PARAM_LIST -> id_token IF_ARRAY TYPE_DEF NEXT_PARAM
+37 PARAM_LIST -> epsilon
+38 NEXT_PARAM -> , id_token IF_ARRAY TYPE_DEF NEXT_PARAM
+39 NEXT_PARAM -> epsilon
+40 OP_RETURN -> returns id_token TYPE_DEF OP_RETURN_LIST
+41 OP_RETURN -> epsilon
+42 OP_RETURN_LIST -> , id_token TYPE_DEF OP_RETURN_LIST
+43 OP_RETURN_LIST -> epsilon
+44 VAR_LIST -> , id_token IF_ARRAY TYPE_DEF ASSIGN_DEC VAR_LIST
+45 VAR_LIST -> epsilon
+46 IF_ARRAY -> [ EXPRESSION IF_TWO , EXPRESSION IF_TWO ]
+47 IF_TWO -> : EXPRESSION
+48 IF_TWO -> epsilon
+49 IF_ARRAY -> epsilon
+50 ASSIGN_DEC -> := EXPRESSION
+51 ASSIGN_DEC -> epsilon
+52 TYPE_DEF -> : TYPE
+53 TYPE_DEF -> epsilon
+54 END -> end END_P
+55 END_P -> id_token
+56 END_P -> epsilon
+57 SEMICOLON -> ;
+58 SEMICOLON -> epsilon
+59 ID_LIST -> , id_token ID_LIST
+60 ID_LIST -> epsilon
+61 PROC -> proc id_token PARAMETERS OP_RETURN
+62 BLOCK -> STATEMENTS
+63 STATEMENTS -> STATEMENT STATEMENTS
+64 STATEMENTS -> epsilon
+65 STATEMENT -> SEQUENTIAL
+66 STATEMENT -> OP_INVOCATION
+67 STATEMENT -> OP_SERVICE
+68 STATEMENT -> RSRC_CONTROL
+69 SEQUENTIAL -> skip
+70 SEQUENTIAL -> exit
+71 SEQUENTIAL -> next
+72 SEQUENTIAL -> if EXPRESSION -> BLOCK fi
+73 SEQUENTIAL -> do EXPRESSION -> BLOCK od
+74 SEQUENTIAL -> fa SEQUENTIAL_FA
+75 SEQUENTIAL_FA -> IDENTIFIER := EXPRESSION to IDENTIFIER -> BLOCK af
+76 SEQUENTIAL -> IDENTIFIER SEQUENTIAL_P SEMICOLON
+77 SEQUENTIAL_P -> IDEN_LIST := EXPRESSION EXPR_LIST
+78 SEQUENTIAL_P -> :=: IDENTIFIER
+79 SEQUENTIAL_P -> +:= EXPRESSION
+80 OP_INVOCATION -> call OPERATION OP_PARAMETERS SEMICOLON
+81 OP_INVOCATION -> OPERATION OP_PARAMETERS SEMICOLON
+82 OP_INVOCATION -> send OPERATION OP_PARAMETERS SEMICOLON
+83 OP_SERVICE -> in OPERATION (IDEN_LIST)
+84 OP_SERVICE -> receive OPERATION ( IDEN_LIST )
+85 OP_SERVICE -> return
+86 OP_SERVICE -> reply
+87 RSRC_CONTROL -> cap := create resource PARAMETERS
+88 RSRC_CONTROL -> destroy cap
+89 OP_PARAMETERS -> ( OP_PARAM_LIST )
+90 OP_PARAM_LIST -> IDENTIFIER NEXT_OP_PARAM
+91 OP_PARAM_LIST -> epsilon
+92 NEXT_OP_PARAM -> , IDENTIFIER NEXT_OP_PARAM
+93 NEXT_OP_PARAM -> epsilon
+94 IDEN_LIST -> IDENTIFIER IDEN_LIST_P
+95 IDEN_LIST_P -> epsilon
+96 IDEN_LIST_P -> , IDENTIFIER IDEN_LIST_P
+97 IDENTIFIER -> id_token TOKENATTR
+98 IDENTIFIER -> tk_string
+99 TOKENATTR -> . id_token
+100 TOKENATTR -> epsilon
+101 TOKENATTR -> [ IDEN_LIST ]
+102 EXPR_LIST -> , Exp EXPR_LIST
+103 EXPR_LIST -> epsilon
+104 OPERATION -> write
+105 OPERATION -> put
+106 OPERATION -> puts
+107 OPERATION -> read
+108 OPERATION -> writes
+109 OPERATION -> new
+110 TYPE -> int
+111 TYPE -> string
+112 TYPE -> cap id_token
+113 TYPE -> real
+114 TYPE -> id_token
+115 TYPE -> char
+116 BOOL_EXP -> id_token
+117 EXPRESSION -> TBool EBool_P
+118 EBool_P -> | TBool EBool_P
+119 EBool_P -> epsilon
+120 TBool -> FBool TBool_P
+121 TBool_P -> & FBool TBool_P
+122 TBool_P -> epsilon
+123 FBool -> E X
+124 X -> OPREL E
+125 X -> epsilon
+126 FBool -> ~ FBool
+127 OPREL -> <=
+128 OPREL -> <
+129 OPREL -> >=
+130 E -> T E_P
+131 E_P -> + T E_P
+132 E_P -> - T E_P
+133 E_P -> epsilon
+134 T -> F T_P
+135 T_P -> * F T_P
+136 T_P -> / F T_P
+137 T_P -> % F T_P
+138 T_P -> epsilon
+139 F -> FP F_P
+140 F_P -> ^ FP F_P
+141 F_P -> epsilon
+142 FP -> id_token IF_ARRAY
+143 FP -> tk_num
+144 FP -> ( E )
 Primeros por no terminal
+primeros de ASSIGN_DEC
+[ := , epsilon , 
 primeros de BLOCK
-[ call , destroy , do , epsilon , exit , fa , identifier , if , in , next , operation , receive , reply , return , send , skip , 
+[ call , cap , destroy , do , epsilon , exit , fa , id_token , if , in , new , next , put , puts , read , receive , reply , return , send , skip , tk_string , write , writes , 
+primeros de BODIES
+[ body , epsilon , 
+primeros de BODY
+[ body , 
 primeros de BOOL_EXP
-[ bool_exp , 
+[ id_token , 
+primeros de B_PARAMS
+[ ( , epsilon , 
+primeros de CONSTANT
+[ const , 
+primeros de E
+[ ( , id_token , tk_num , 
+primeros de EBool_P
+[ epsilon , | , 
+primeros de END
+[ end , 
+primeros de END_P
+[ epsilon , id_token , 
+primeros de END_RESOURCE
+[ body , end , 
 primeros de EXPRESSION
-[ expression , 
+[ ( , id_token , tk_num , ~ , 
 primeros de EXPR_LIST
-[ , , epsilon , expr_list , 
+[ , , epsilon , 
+primeros de EXTEND
+[ extend , 
+primeros de E_P
+[ + , - , epsilon , 
+primeros de F
+[ ( , id_token , tk_num , 
+primeros de FBool
+[ ( , id_token , tk_num , ~ , 
+primeros de FP
+[ ( , id_token , tk_num , 
+primeros de F_P
+[ ^ , epsilon , 
+primeros de GLOBAL
+[ global , 
+primeros de GLOBALS
+[ epsilon , global , 
+primeros de GLOBAL_CONTENT
+[ const , epsilon , type , 
 primeros de IDENTIFIER
-[ identifier , 
-primeros de IDENTIFIERS
-[ identifiers , 
+[ id_token , tk_string , 
 primeros de IDEN_LIST
+[ id_token , tk_string , 
+primeros de IDEN_LIST_P
+[ , , epsilon , 
+primeros de ID_LIST
+[ , , epsilon , 
+primeros de IF_ARRAY
+[ [ , epsilon , 
+primeros de IF_TWO
+[ : , epsilon , 
+primeros de IMPORT
+[ import , 
+primeros de INIT
+[ global , resource , 
+primeros de NEXT_OP_PARAM
+[ , , epsilon , 
+primeros de NEXT_PARAM
 [ , , epsilon , 
 primeros de OPERATION
-[ operation , 
+[ new , put , puts , read , write , writes , 
+primeros de OPREL
+[ < , <= , >= , 
+primeros de OP_DECLARATION
+[ op , 
+primeros de OP_FUNCTION
+[ epsilon , { , 
 primeros de OP_INVOCATION
-[ call , operation , send , 
+[ call , new , put , puts , read , send , write , writes , 
+primeros de OP_PARAMETERS
+[ ( , 
+primeros de OP_PARAM_LIST
+[ epsilon , id_token , tk_string , 
+primeros de OP_RETURN
+[ epsilon , returns , 
+primeros de OP_RETURN_LIST
+[ , , epsilon , 
 primeros de OP_SERVICE
 [ in , receive , reply , return , 
+primeros de PARAMETERS
+[ ( , 
+primeros de PARAM_LIST
+[ epsilon , id_token , 
+primeros de PROC
+[ proc , 
+primeros de RESOURCE
+[ resource , 
+primeros de RESOURCES
+[ epsilon , resource , 
 primeros de RSRC_CONTROL
-[ destroy , 
+[ cap , destroy , 
+primeros de R_DECLARATION
+[ const , op , type , var , 
+primeros de R_ELEMENTS
+[ call , cap , const , destroy , do , epsilon , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , 
 primeros de SEMICOLON
 [ ; , epsilon , 
 primeros de SEQUENTIAL
-[ do , exit , fa , identifier , if , next , skip , 
+[ do , exit , fa , id_token , if , next , skip , tk_string , 
+primeros de SEQUENTIAL_FA
+[ id_token , tk_string , 
 primeros de SEQUENTIAL_P
-[ , , := , :=: , 
+[ +:= , :=: , id_token , tk_string , 
 primeros de STATEMENT
-[ call , destroy , do , exit , fa , identifier , if , in , next , operation , receive , reply , return , send , skip , 
+[ call , cap , destroy , do , exit , fa , id_token , if , in , new , next , put , puts , read , receive , reply , return , send , skip , tk_string , write , writes , 
 primeros de STATEMENTS
-[ call , destroy , do , epsilon , exit , fa , identifier , if , in , next , operation , receive , reply , return , send , skip , 
+[ call , cap , destroy , do , epsilon , exit , fa , id_token , if , in , new , next , put , puts , read , receive , reply , return , send , skip , tk_string , write , writes , 
+primeros de T
+[ ( , id_token , tk_num , 
+primeros de TBool
+[ ( , id_token , tk_num , ~ , 
+primeros de TBool_P
+[ & , epsilon , 
+primeros de TOKENATTR
+[ . , [ , epsilon , 
+primeros de TYPE
+[ cap , char , id_token , int , real , string , 
+primeros de TYPE_DEC
+[ type , 
+primeros de TYPE_DEF
+[ : , epsilon , 
+primeros de T_P
+[ % , * , / , epsilon , 
+primeros de VARIABLE
+[ var , 
+primeros de VAR_LIST
+[ , , epsilon , 
+primeros de X
+[ < , <= , >= , epsilon , 
 Conjunto de siguientes por regla 
+siguientes de ASSIGN_DEC
+[, , ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
 siguientes de BLOCK
-[; , af , fi , od , ]
-siguientes de BOOL_EXP
-[-> , ]
-siguientes de CAPABILITY
-[$ , := , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
-siguientes de EXPRESSION
-[$ , , , ; , af , call , destroy , do , exit , expr_list , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
-siguientes de EXPR_LIST
-[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
-siguientes de IDENTIFIER
-[$ , , , := , :=: , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
-siguientes de IDENTIFIERS
-[) , ]
-siguientes de IDEN_LIST
-[:= , ]
-siguientes de OPERATION
-[( , (IDENTIFIERS) , ]
-siguientes de OP_INVOCATION
-[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
-siguientes de OP_SERVICE
-[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
-siguientes de PARAMETERS
-[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
-siguientes de RSRC_CONTROL
-[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
-siguientes de SEMICOLON
 [af , fi , od , ]
+siguientes de BODIES
+[$ , ]
+siguientes de BODY
+[$ , body , resource , ]
+siguientes de B_PARAMS
+[call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de CONSTANT
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de E
+[& , ) , , , -> , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de EBool_P
+[, , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , ]
+siguientes de END
+[$ , body , resource , ]
+siguientes de END_P
+[$ , body , resource , ]
+siguientes de END_RESOURCE
+[$ , body , resource , ]
+siguientes de EXPRESSION
+[, , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , ]
+siguientes de EXPR_LIST
+[; , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de EXTEND
+[body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de E_P
+[& , ) , , , -> , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de Exp
+[, , ; , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de F
+[% , & , ) , * , + , , , - , -> , / , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de FBool
+[& , , , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de FP
+[% , & , ) , * , + , , , - , -> , / , : , ; , < , <= , >= , ] , ^ , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de F_P
+[% , & , ) , * , + , , , - , -> , / , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de GLOBAL
+[resource , ]
+siguientes de GLOBALS
+[resource , ]
+siguientes de GLOBAL_CONTENT
+[end , ]
+siguientes de IDENTIFIER
+[) , +:= , , , -> , := , :=: , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de IDEN_LIST
+[) , := , ] , ]
+siguientes de IDEN_LIST_P
+[) , := , ] , ]
+siguientes de ID_LIST
+[body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de IF_ARRAY
+[% , & , ) , * , + , , , - , -> , / , : , := , ; , < , <= , >= , ] , ^ , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de IF_TWO
+[, , ] , ]
+siguientes de IMPORT
+[body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de INIT
+[$ , ]
+siguientes de NEXT_OP_PARAM
+[) , ]
+siguientes de NEXT_PARAM
+[) , ]
+siguientes de OPERATION
+[( , (IDEN_LIST) , ]
+siguientes de OPREL
+[( , id_token , tk_num , ]
+siguientes de OP_DECLARATION
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de OP_FUNCTION
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , returns , send , skip , tk_string , type , var , write , writes , ]
+siguientes de OP_INVOCATION
+[af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de OP_PARAMETERS
+[; , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de OP_PARAM_LIST
+[) , ]
+siguientes de OP_RETURN
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de OP_RETURN_LIST
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de OP_SERVICE
+[af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de PARAMETERS
+[; , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , returns , send , skip , tk_string , type , var , write , writes , { , ]
+siguientes de PARAM_LIST
+[) , ]
+siguientes de PROC
+[body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de RESOURCE
+[$ , body , resource , ]
+siguientes de RESOURCES
+[$ , body , ]
+siguientes de RSRC_CONTROL
+[af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de R_DECLARATION
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de R_ELEMENTS
+[body , end , ]
+siguientes de SEMICOLON
+[af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
 siguientes de SEQUENTIAL
-[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+[af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de SEQUENTIAL_FA
+[af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
 siguientes de SEQUENTIAL_P
-[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+[; , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
 siguientes de STATEMENT
-[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+[af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
 siguientes de STATEMENTS
-[; , af , fi , od , ]
+[af , fi , od , ]
+siguientes de T
+[& , ) , + , , , - , -> , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de TBool
+[, , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de TBool_P
+[, , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de TOKENATTR
+[) , +:= , , , -> , := , :=: , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de TYPE
+[) , , , := , ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de TYPE_DEC
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de TYPE_DEF
+[) , , , := , ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de T_P
+[& , ) , + , , , - , -> , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+siguientes de VARIABLE
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de VAR_LIST
+[; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+siguientes de X
+[& , , , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
  Conjunto de preduccion por regla 
 Prediccion de 0
-[ do , exit , fa , identifier , if , next , skip , ]
+ INIT[ global , resource , ]
 Prediccion de 1
-[ call , operation , send , ]
+ GLOBALS[ global , ]
 Prediccion de 2
-[ in , receive , reply , return , ]
+ GLOBALS[ resource , ]
 Prediccion de 3
-[ destroy , ]
+ RESOURCES[ resource , ]
 Prediccion de 4
-[ skip , ]
+ RESOURCES[ $ , body , ]
 Prediccion de 5
-[ exit , ]
+ BODIES[ body , ]
 Prediccion de 6
-[ next , ]
+ BODIES[ $ , ]
 Prediccion de 7
-[ if , ]
+ GLOBAL[ global , ]
 Prediccion de 8
-[ do , ]
+ RESOURCE[ resource , ]
 Prediccion de 9
-[ fa , ]
+ BODY[ body , ]
 Prediccion de 10
-[ identifier , ]
+ GLOBAL_CONTENT[ const , ]
 Prediccion de 11
-[ , , := , ]
+ GLOBAL_CONTENT[ type , ]
 Prediccion de 12
-[ :=: , ]
+ GLOBAL_CONTENT[ end , ]
 Prediccion de 13
-[ call , ]
+ R_ELEMENTS[ import , ]
 Prediccion de 14
-[ operation , ]
+ R_ELEMENTS[ extend , ]
 Prediccion de 15
-[ send , ]
+ R_ELEMENTS[ const , op , type , var , ]
 Prediccion de 16
-[ in , ]
+ R_ELEMENTS[ call , cap , destroy , do , exit , fa , id_token , if , in , new , next , put , puts , read , receive , reply , return , send , skip , tk_string , write , writes , ]
 Prediccion de 17
-[ receive , ]
+ R_ELEMENTS[ proc , ]
 Prediccion de 18
-[ return , ]
+ R_ELEMENTS[ body , end , ]
 Prediccion de 19
-[ reply , ]
+ IMPORT[ import , ]
 Prediccion de 20
-[ ]
+ EXTEND[ extend , ]
 Prediccion de 21
-[ destroy , ]
+ END_RESOURCE[ end , ]
 Prediccion de 22
-[ , , ]
+ END_RESOURCE[ body , ]
 Prediccion de 23
-[ := , ]
+ R_DECLARATION[ const , ]
 Prediccion de 24
-[ , , ]
+ R_DECLARATION[ type , ]
 Prediccion de 25
-[ $ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+ R_DECLARATION[ op , ]
 Prediccion de 26
-[ ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+ R_DECLARATION[ var , ]
 Prediccion de 27
-[ call , destroy , do , exit , fa , identifier , if , in , next , operation , receive , reply , return , send , skip , ]
+ CONSTANT[ const , ]
 Prediccion de 28
-[ ; , af , fi , od , ]
+ TYPE_DEC[ type , ]
 Prediccion de 29
-[ ; , ]
+ OP_DECLARATION[ op , ]
 Prediccion de 30
-[ af , fi , od , ]
+ VARIABLE[ var , ]
 Prediccion de 31
-[ bool_exp , ]
+ B_PARAMS[ ( , ]
 Prediccion de 32
-[ expression , ]
+ B_PARAMS[ call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
 Prediccion de 33
-[ operation , ]
+ PARAMETERS[ ( , ]
 Prediccion de 34
-[ identifier , ]
+ OP_FUNCTION[ { , ]
 Prediccion de 35
-[ identifiers , ]
+ OP_FUNCTION[ ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , returns , send , skip , tk_string , type , var , write , writes , ]
 Prediccion de 36
-[ expr_list , ]
-<id_token,STATEMENT,1,1>
-<tk_execute,,1,11>
-<id_token,SEQUENTIAL,1,14>
-<id_token,STATEMENT,2,1>
-<tk_execute,,2,11>
-<id_token,OP_INVOCATION,2,14>
-<id_token,STATEMENT,3,1>
-<tk_execute,,3,11>
-<id_token,OP_SERVICE,3,14>
-<id_token,STATEMENT,4,1>
-<tk_execute,,4,11>
-<id_token,RSRC_CONTROL,4,14>
-<id_token,SEQUENTIAL,6,1>
-<tk_execute,,6,12>
-<id_token,skip,6,15>
-<id_token,SEQUENTIAL,7,1>
-<tk_execute,,7,12>
-<id_token,exit,7,15>
-<id_token,SEQUENTIAL,8,1>
-<tk_execute,,8,12>
-<next,,8,15>
-<id_token,SEQUENTIAL,11,1>
-<tk_execute,,11,12>
-<if,,11,15>
-<id_token,BOOL_EXP,11,18>
-<tk_execute,,11,27>
-<id_token,BLOCK,11,30>
-<id_token,SEMICOLON,11,36>
-<fi,,11,46>
-<id_token,SEQUENTIAL,12,1>
-<tk_execute,,12,12>
-<do,,12,15>
-<id_token,BOOL_EXP,12,18>
-<tk_execute,,12,27>
-<id_token,BLOCK,12,30>
-<id_token,SEMICOLON,12,36>
-<od,,12,46>
-<id_token,SEQUENTIAL,13,1>
-<tk_execute,,13,12>
-<fa,,13,15>
-<id_token,BOOL_EXP,13,18>
-<tk_execute,,13,27>
-<id_token,BLOCK,13,30>
-<id_token,SEMICOLON,13,36>
-<af,,13,46>
-<id_token,SEQUENTIAL,14,1>
-<tk_execute,,14,13>
-<id_token,IDENTIFIER,14,16>
-<id_token,SEQUENTIAL_P,14,27>
-<id_token,SEQUENTIAL_P,15,1>
-<tk_execute,,15,15>
-<id_token,IDEN_LIST,15,18>
-<tk_assig,,15,28>
-<id_token,EXPRESSION,15,31>
-<id_token,EXPR_LIST,15,42>
-<id_token,SEQUENTIAL_P,16,1>
-<tk_execute,,16,15>
-<tk_swap,,16,18>
-<id_token,IDENTIFIER,16,22>
-<id_token,OP_INVOCATION,18,1>
-<tk_execute,,18,15>
-<call,,18,18>
-<id_token,OPERATION,18,23>
-<id_token,PARAMETERS,18,33>
-<id_token,OP_INVOCATION,19,1>
-<tk_execute,,19,15>
-<id_token,OPERATION,19,18>
-<id_token,PARAMETERS,19,28>
-<id_token,OP_INVOCATION,20,1>
-<tk_execute,,20,15>
-<send,,20,18>
-<id_token,OPERATION,20,23>
-<id_token,PARAMETERS,20,33>
-<id_token,OP_SERVICE,22,1>
-<tk_execute,,22,12>
-<in,,22,15>
-<id_token,OPERATION,22,18>
-<tk_parent_l,,22,28>
-<id_token,IDENTIFIERS,22,29>
-<tk_parent_r,,22,40>
-<id_token,OP_SERVICE,23,1>
-<tk_execute,,23,12>
-<receive,,23,15>
-<id_token,OPERATION,23,23>
-<tk_parent_l,,23,33>
-<id_token,IDENTIFIERS,23,35>
-<tk_parent_r,,23,48>
-<id_token,OP_SERVICE,24,1>
-<tk_execute,,24,12>
-<id_token,return,24,15>
-<id_token,OP_SERVICE,25,1>
-<tk_execute,,25,12>
-<reply,,25,15>
-<id_token,RSRC_CONTROL,27,1>
-<tk_execute,,27,14>
-<id_token,CAPABILITY,27,17>
-<tk_assig,,27,28>
-<create,,27,31>
-<resource,,27,38>
-<id_token,PARAMETERS,27,47>
-<id_token,RSRC_CONTROL,28,1>
-<tk_execute,,28,14>
-<destroy,,28,17>
-<id_token,CAPABILITY,28,25>
-<id_token,IDEN_LIST,31,1>
-<tk_execute,,31,11>
-<tk_coma,,31,14>
-<id_token,IDENTIFIER,31,16>
-<id_token,IDEN_LIST,31,27>
-<id_token,IDEN_LIST,32,1>
-<tk_execute,,32,11>
-<id_token,epsilon,32,14>
-<id_token,EXPR_LIST,34,1>
-<tk_execute,,34,11>
-<tk_coma,,34,14>
-<id_token,EXPRESSION,34,16>
-<id_token,EXPR_LIST,34,27>
-<id_token,EXPR_LIST,35,1>
-<tk_execute,,35,11>
-<id_token,epsilon,35,14>
-<id_token,BLOCK,37,1>
-<tk_execute,,37,7>
-<id_token,STATEMENTS,37,10>
-<id_token,STATEMENTS,39,1>
-<tk_execute,,39,12>
-<id_token,STATEMENT,39,15>
-<id_token,STATEMENTS,39,25>
-<id_token,STATEMENTS,40,1>
-<tk_execute,,40,12>
-<id_token,epsilon,40,15>
-<id_token,SEMICOLON,42,1>
-<tk_execute,,42,11>
-<tk_semicolon,,42,14>
-<id_token,SEMICOLON,43,1>
-<tk_execute,,43,11>
-<id_token,epsilon,43,14>
-<id_token,BOOL_EXP,45,1>
-<tk_execute,,45,10>
-<id_token,bool_exp,45,13>
-<id_token,EXPRESSION,46,1>
-<tk_execute,,46,12>
-<id_token,expression,46,15>
-<id_token,OPERATION,47,1>
-<tk_execute,,47,11>
-<id_token,operation,47,14>
-<id_token,IDENTIFIER,48,1>
-<tk_execute,,48,12>
-<id_token,identifier,48,15>
-<id_token,IDENTIFIERS,49,1>
-<tk_execute,,49,13>
-<id_token,identifiers,49,16>
-<id_token,EXPR_LIST,50,1>
-<tk_execute,,50,11>
-<id_token,expr_list,50,14>
+ PARAM_LIST[ id_token , ]
+Prediccion de 37
+ PARAM_LIST[ ) , ]
+Prediccion de 38
+ NEXT_PARAM[ , , ]
+Prediccion de 39
+ NEXT_PARAM[ ) , ]
+Prediccion de 40
+ OP_RETURN[ returns , ]
+Prediccion de 41
+ OP_RETURN[ ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 42
+ OP_RETURN_LIST[ , , ]
+Prediccion de 43
+ OP_RETURN_LIST[ ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 44
+ VAR_LIST[ , , ]
+Prediccion de 45
+ VAR_LIST[ ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 46
+ IF_ARRAY[ [ , ]
+Prediccion de 47
+ IF_TWO[ : , ]
+Prediccion de 48
+ IF_TWO[ , , ] , ]
+Prediccion de 49
+ IF_ARRAY[ % , & , ) , * , + , , , - , -> , / , : , := , ; , < , <= , >= , ] , ^ , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+Prediccion de 50
+ ASSIGN_DEC[ := , ]
+Prediccion de 51
+ ASSIGN_DEC[ , , ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 52
+ TYPE_DEF[ : , ]
+Prediccion de 53
+ TYPE_DEF[ ) , , , := , ; , body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 54
+ END[ end , ]
+Prediccion de 55
+ END_P[ id_token , ]
+Prediccion de 56
+ END_P[ $ , body , resource , ]
+Prediccion de 57
+ SEMICOLON[ ; , ]
+Prediccion de 58
+ SEMICOLON[ af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 59
+ ID_LIST[ , , ]
+Prediccion de 60
+ ID_LIST[ body , call , cap , const , destroy , do , end , exit , extend , fa , id_token , if , import , in , new , next , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 61
+ PROC[ proc , ]
+Prediccion de 62
+ BLOCK[ af , call , cap , destroy , do , exit , fa , fi , id_token , if , in , new , next , od , put , puts , read , receive , reply , return , send , skip , tk_string , write , writes , ]
+Prediccion de 63
+ STATEMENTS[ call , cap , destroy , do , exit , fa , id_token , if , in , new , next , put , puts , read , receive , reply , return , send , skip , tk_string , write , writes , ]
+Prediccion de 64
+ STATEMENTS[ af , fi , od , ]
+Prediccion de 65
+ STATEMENT[ do , exit , fa , id_token , if , next , skip , tk_string , ]
+Prediccion de 66
+ STATEMENT[ call , new , put , puts , read , send , write , writes , ]
+Prediccion de 67
+ STATEMENT[ in , receive , reply , return , ]
+Prediccion de 68
+ STATEMENT[ cap , destroy , ]
+Prediccion de 69
+ SEQUENTIAL[ skip , ]
+Prediccion de 70
+ SEQUENTIAL[ exit , ]
+Prediccion de 71
+ SEQUENTIAL[ next , ]
+Prediccion de 72
+ SEQUENTIAL[ if , ]
+Prediccion de 73
+ SEQUENTIAL[ do , ]
+Prediccion de 74
+ SEQUENTIAL[ fa , ]
+Prediccion de 75
+ SEQUENTIAL_FA[ id_token , tk_string , ]
+Prediccion de 76
+ SEQUENTIAL[ id_token , tk_string , ]
+Prediccion de 77
+ SEQUENTIAL_P[ id_token , tk_string , ]
+Prediccion de 78
+ SEQUENTIAL_P[ :=: , ]
+Prediccion de 79
+ SEQUENTIAL_P[ +:= , ]
+Prediccion de 80
+ OP_INVOCATION[ call , ]
+Prediccion de 81
+ OP_INVOCATION[ new , put , puts , read , write , writes , ]
+Prediccion de 82
+ OP_INVOCATION[ send , ]
+Prediccion de 83
+ OP_SERVICE[ in , ]
+Prediccion de 84
+ OP_SERVICE[ receive , ]
+Prediccion de 85
+ OP_SERVICE[ return , ]
+Prediccion de 86
+ OP_SERVICE[ reply , ]
+Prediccion de 87
+ RSRC_CONTROL[ cap , ]
+Prediccion de 88
+ RSRC_CONTROL[ destroy , ]
+Prediccion de 89
+ OP_PARAMETERS[ ( , ]
+Prediccion de 90
+ OP_PARAM_LIST[ id_token , tk_string , ]
+Prediccion de 91
+ OP_PARAM_LIST[ ) , ]
+Prediccion de 92
+ NEXT_OP_PARAM[ , , ]
+Prediccion de 93
+ NEXT_OP_PARAM[ ) , ]
+Prediccion de 94
+ IDEN_LIST[ id_token , tk_string , ]
+Prediccion de 95
+ IDEN_LIST_P[ ) , := , ] , ]
+Prediccion de 96
+ IDEN_LIST_P[ , , ]
+Prediccion de 97
+ IDENTIFIER[ id_token , ]
+Prediccion de 98
+ IDENTIFIER[ tk_string , ]
+Prediccion de 99
+ TOKENATTR[ . , ]
+Prediccion de 100
+ TOKENATTR[ ) , +:= , , , -> , := , :=: , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 101
+ TOKENATTR[ [ , ]
+Prediccion de 102
+ EXPR_LIST[ , , ]
+Prediccion de 103
+ EXPR_LIST[ ; , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , type , var , write , writes , ]
+Prediccion de 104
+ OPERATION[ write , ]
+Prediccion de 105
+ OPERATION[ put , ]
+Prediccion de 106
+ OPERATION[ puts , ]
+Prediccion de 107
+ OPERATION[ read , ]
+Prediccion de 108
+ OPERATION[ writes , ]
+Prediccion de 109
+ OPERATION[ new , ]
+Prediccion de 110
+ TYPE[ int , ]
+Prediccion de 111
+ TYPE[ string , ]
+Prediccion de 112
+ TYPE[ cap , ]
+Prediccion de 113
+ TYPE[ real , ]
+Prediccion de 114
+ TYPE[ id_token , ]
+Prediccion de 115
+ TYPE[ char , ]
+Prediccion de 116
+ BOOL_EXP[ id_token , ]
+Prediccion de 117
+ EXPRESSION[ ( , id_token , tk_num , ~ , ]
+Prediccion de 118
+ EBool_P[ | , ]
+Prediccion de 119
+ EBool_P[ , , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , ]
+Prediccion de 120
+ TBool[ ( , id_token , tk_num , ~ , ]
+Prediccion de 121
+ TBool_P[ & , ]
+Prediccion de 122
+ TBool_P[ , , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+Prediccion de 123
+ FBool[ ( , id_token , tk_num , ]
+Prediccion de 124
+ X[ < , <= , >= , ]
+Prediccion de 125
+ X[ & , , , -> , : , ; , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+Prediccion de 126
+ FBool[ ~ , ]
+Prediccion de 127
+ OPREL[ <= , ]
+Prediccion de 128
+ OPREL[ < , ]
+Prediccion de 129
+ OPREL[ >= , ]
+Prediccion de 130
+ E[ ( , id_token , tk_num , ]
+Prediccion de 131
+ E_P[ + , ]
+Prediccion de 132
+ E_P[ - , ]
+Prediccion de 133
+ E_P[ & , ) , , , -> , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+Prediccion de 134
+ T[ ( , id_token , tk_num , ]
+Prediccion de 135
+ T_P[ * , ]
+Prediccion de 136
+ T_P[ / , ]
+Prediccion de 137
+ T_P[ % , ]
+Prediccion de 138
+ T_P[ & , ) , + , , , - , -> , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+Prediccion de 139
+ F[ ( , id_token , tk_num , ]
+Prediccion de 140
+ F_P[ ^ , ]
+Prediccion de 141
+ F_P[ % , & , ) , * , + , , , - , -> , / , : , ; , < , <= , >= , ] , af , body , call , cap , const , destroy , do , end , exit , extend , fa , fi , id_token , if , import , in , new , next , od , op , proc , put , puts , read , receive , reply , return , send , skip , tk_string , to , type , var , write , writes , | , ]
+Prediccion de 142
+ FP[ id_token , ]
+Prediccion de 143
+ FP[ tk_num , ]
+Prediccion de 144
+ FP[ ( , ]
+<resource,,1,1>
+<id_token,x1,1,10>
+<tk_parent_l,,1,12>
+<tk_parent_r,,1,13>
+<op,,2,2>
+<id_token,f,2,5>
+<tk_parent_l,,2,6>
+<id_token,x,2,7>
+<tk_colon,,2,8>
+<char,,2,9>
+<tk_parent_r,,2,13>
+<body,,3,1>
+<id_token,x1,3,6>
+<tk_parent_l,,3,8>
+<id_token,a,3,9>
+<tk_brace_l,,3,10>
+<tk_num,1,3,11>
+<tk_colon,,3,12>
+<tk_num,3,3,13>
+<tk_coma,,3,14>
+<tk_num,2,3,15>
+<tk_colon,,3,16>
+<tk_num,4,3,17>
+<tk_brace_r,,3,18>
+<tk_colon,,3,19>
+<int,,3,20>
+<tk_coma,,3,23>
+<id_token,c,3,24>
+<tk_colon,,3,25>
+<char,,3,26>
+<tk_parent_r,,3,30>
+<write,,4,2>
+<tk_parent_l,,4,7>
+<id_token,c,4,8>
+<tk_parent_r,,4,9>
+<tk_semicolon,,4,10>
+<id_token,f,4,12>
+<tk_parent_l,,4,13>
+'
+>>>Error lexico(linea:4,posicion:14)
+Regla INIT
+Encontro prediccion resource en regla 0
+ Calling GLOBALS
+Regla GLOBALS
+Encontro prediccion resource en regla 2
+Emparejanding epsilon
+ Calling RESOURCE
+Regla RESOURCE
+Encontro prediccion resource en regla 8
+Emparejanding resource
+Emparejado resource con resource
+Emparejanding id_token
+Emparejado id_token con id_token
+ Calling PARAMETERS
+Regla PARAMETERS
+Encontro prediccion ( en regla 33
+Emparejanding (
+Emparejado ( con (
+ Calling PARAM_LIST
+Regla PARAM_LIST
+Encontro prediccion ) en regla 37
+Emparejanding epsilon
+Emparejanding )
+Emparejado ) con )
+ Calling R_ELEMENTS
+Regla R_ELEMENTS
+Encontro prediccion op en regla 15
+ Calling R_DECLARATION
+Regla R_DECLARATION
+Encontro prediccion op en regla 25
+ Calling OP_DECLARATION
+Regla OP_DECLARATION
+Encontro prediccion op en regla 29
+Emparejanding op
+Emparejado op con op
+Emparejanding id_token
+Emparejado id_token con id_token
+ Calling PARAMETERS
+Regla PARAMETERS
+Encontro prediccion ( en regla 33
+Emparejanding (
+Emparejado ( con (
+ Calling PARAM_LIST
+Regla PARAM_LIST
+Encontro prediccion id_token en regla 36
+Emparejanding id_token
+Emparejado id_token con id_token
+ Calling IF_ARRAY
+Regla IF_ARRAY
+Encontro prediccion : en regla 49
+Emparejanding epsilon
+ Calling TYPE_DEF
+Regla TYPE_DEF
+Encontro prediccion : en regla 52
+Emparejanding :
+Emparejado : con :
+ Calling TYPE
+Regla TYPE
+Encontro prediccion char en regla 115
+Emparejanding char
+Emparejado char con char
+ Calling NEXT_PARAM
+Regla NEXT_PARAM
+Encontro prediccion ) en regla 39
+Emparejanding epsilon
+Emparejanding )
+Emparejado ) con )
+ Calling OP_FUNCTION
+Regla OP_FUNCTION
+Encontro prediccion body en regla 35
+Emparejanding epsilon
+ Calling OP_RETURN
+Regla OP_RETURN
+Encontro prediccion body en regla 41
+Emparejanding epsilon
+ Calling SEMICOLON
+Regla SEMICOLON
+Encontro prediccion body en regla 58
+Emparejanding epsilon
+ Calling R_ELEMENTS
+Regla R_ELEMENTS
+Encontro prediccion body en regla 18
+Emparejanding epsilon
+ Calling END_RESOURCE
+Regla END_RESOURCE
+Encontro prediccion body en regla 22
+ Calling BODY
+Regla BODY
+Encontro prediccion body en regla 9
+Emparejanding body
+Emparejado body con body
+Emparejanding id_token
+Emparejado id_token con id_token
+ Calling B_PARAMS
+Regla B_PARAMS
+Encontro prediccion ( en regla 31
+Emparejanding (
+Emparejado ( con (
+ Calling PARAM_LIST
+Regla PARAM_LIST
+Encontro prediccion id_token en regla 36
+Emparejanding id_token
+Emparejado id_token con id_token
+ Calling IF_ARRAY
+Regla IF_ARRAY
+Encontro prediccion [ en regla 46
+Emparejanding [
+Emparejado [ con [
+ Calling EXPRESSION
+Regla EXPRESSION
+Encontro prediccion tk_num en regla 117
+ Calling TBool
+Regla TBool
+Encontro prediccion tk_num en regla 120
+ Calling FBool
+Regla FBool
+Encontro prediccion tk_num en regla 123
+ Calling E
+Regla E
+Encontro prediccion tk_num en regla 130
+ Calling T
+Regla T
+Encontro prediccion tk_num en regla 134
+ Calling F
+Regla F
+Encontro prediccion tk_num en regla 139
+ Calling FP
+Regla FP
+Encontro prediccion tk_num en regla 143
+Emparejanding tk_num
+Emparejado tk_num con tk_num
+ Calling F_P
+Regla F_P
+Encontro prediccion : en regla 141
+Emparejanding epsilon
+ Calling T_P
+Regla T_P
+Encontro prediccion : en regla 138
+Emparejanding epsilon
+ Calling E_P
+Regla E_P
+Encontro prediccion : en regla 133
+Emparejanding epsilon
+ Calling X
+Regla X
+Encontro prediccion : en regla 125
+Emparejanding epsilon
+ Calling TBool_P
+Regla TBool_P
+Encontro prediccion : en regla 122
+Emparejanding epsilon
+ Calling EBool_P
+Regla EBool_P
+Encontro prediccion : en regla 119
+Emparejanding epsilon
+ Calling IF_TWO
+Regla IF_TWO
+Encontro prediccion : en regla 47
+Emparejanding :
+Emparejado : con :
+ Calling EXPRESSION
+Regla EXPRESSION
+Encontro prediccion tk_num en regla 117
+ Calling TBool
+Regla TBool
+Encontro prediccion tk_num en regla 120
+ Calling FBool
+Regla FBool
+Encontro prediccion tk_num en regla 123
+ Calling E
+Regla E
+Encontro prediccion tk_num en regla 130
+ Calling T
+Regla T
+Encontro prediccion tk_num en regla 134
+ Calling F
+Regla F
+Encontro prediccion tk_num en regla 139
+ Calling FP
+Regla FP
+Encontro prediccion tk_num en regla 143
+Emparejanding tk_num
+Emparejado tk_num con tk_num
+ Calling F_P
+Regla F_P
+Encontro prediccion , en regla 141
+Emparejanding epsilon
+ Calling T_P
+Regla T_P
+Encontro prediccion , en regla 138
+Emparejanding epsilon
+ Calling E_P
+Regla E_P
+Encontro prediccion , en regla 133
+Emparejanding epsilon
+ Calling X
+Regla X
+Encontro prediccion , en regla 125
+Emparejanding epsilon
+ Calling TBool_P
+Regla TBool_P
+Encontro prediccion , en regla 122
+Emparejanding epsilon
+ Calling EBool_P
+Regla EBool_P
+Encontro prediccion , en regla 119
+Emparejanding epsilon
+Emparejanding ,
+Emparejado , con ,
+ Calling EXPRESSION
+Regla EXPRESSION
+Encontro prediccion tk_num en regla 117
+ Calling TBool
+Regla TBool
+Encontro prediccion tk_num en regla 120
+ Calling FBool
+Regla FBool
+Encontro prediccion tk_num en regla 123
+ Calling E
+Regla E
+Encontro prediccion tk_num en regla 130
+ Calling T
+Regla T
+Encontro prediccion tk_num en regla 134
+ Calling F
+Regla F
+Encontro prediccion tk_num en regla 139
+ Calling FP
+Regla FP
+Encontro prediccion tk_num en regla 143
+Emparejanding tk_num
+Emparejado tk_num con tk_num
+ Calling F_P
+Regla F_P
+Encontro prediccion : en regla 141
+Emparejanding epsilon
+ Calling T_P
+Regla T_P
+Encontro prediccion : en regla 138
+Emparejanding epsilon
+ Calling E_P
+Regla E_P
+Encontro prediccion : en regla 133
+Emparejanding epsilon
+ Calling X
+Regla X
+Encontro prediccion : en regla 125
+Emparejanding epsilon
+ Calling TBool_P
+Regla TBool_P
+Encontro prediccion : en regla 122
+Emparejanding epsilon
+ Calling EBool_P
+Regla EBool_P
+Encontro prediccion : en regla 119
+Emparejanding epsilon
+ Calling IF_TWO
+Regla IF_TWO
+Encontro prediccion : en regla 47
+Emparejanding :
+Emparejado : con :
+ Calling EXPRESSION
+Regla EXPRESSION
+Encontro prediccion tk_num en regla 117
+ Calling TBool
+Regla TBool
+Encontro prediccion tk_num en regla 120
+ Calling FBool
+Regla FBool
+Encontro prediccion tk_num en regla 123
+ Calling E
+Regla E
+Encontro prediccion tk_num en regla 130
+ Calling T
+Regla T
+Encontro prediccion tk_num en regla 134
+ Calling F
+Regla F
+Encontro prediccion tk_num en regla 139
+ Calling FP
+Regla FP
+Encontro prediccion tk_num en regla 143
+Emparejanding tk_num
+Emparejado tk_num con tk_num
+ Calling F_P
+Regla F_P
+Encontro prediccion ] en regla 141
+Emparejanding epsilon
+ Calling T_P
+Regla T_P
+Encontro prediccion ] en regla 138
+Emparejanding epsilon
+ Calling E_P
+Regla E_P
+Encontro prediccion ] en regla 133
+Emparejanding epsilon
+ Calling X
+Regla X
+Encontro prediccion ] en regla 125
+Emparejanding epsilon
+ Calling TBool_P
+Regla TBool_P
+Encontro prediccion ] en regla 122
+Emparejanding epsilon
+ Calling EBool_P
+Regla EBool_P
+Encontro prediccion ] en regla 119
+Emparejanding epsilon
+Emparejanding ]
+Emparejado ] con ]
+ Calling TYPE_DEF
+Regla TYPE_DEF
+Encontro prediccion : en regla 52
+Emparejanding :
+Emparejado : con :
+ Calling TYPE
+Regla TYPE
+Encontro prediccion int en regla 110
+Emparejanding int
+Emparejado int con int
+ Calling NEXT_PARAM
+Regla NEXT_PARAM
+Encontro prediccion , en regla 38
+Emparejanding ,
+Emparejado , con ,
+Emparejanding id_token
+Emparejado id_token con id_token
+ Calling IF_ARRAY
+Regla IF_ARRAY
+Encontro prediccion : en regla 49
+Emparejanding epsilon
+ Calling TYPE_DEF
+Regla TYPE_DEF
+Encontro prediccion : en regla 52
+Emparejanding :
+Emparejado : con :
+ Calling TYPE
+Regla TYPE
+Encontro prediccion char en regla 115
+Emparejanding char
+Emparejado char con char
+ Calling NEXT_PARAM
+Regla NEXT_PARAM
+Encontro prediccion ) en regla 39
+Emparejanding epsilon
+Emparejanding )
+Emparejado ) con )
+ Calling R_ELEMENTS
+Regla R_ELEMENTS
+Encontro prediccion write en regla 16
+ Calling STATEMENT
 Regla STATEMENT
-STATEMENT
-1 1
- Error tisastico, no se encontro id_token en el conjunto de prediccion porque tisa no se puede predecir <3
+Encontro prediccion write en regla 66
+ Calling OP_INVOCATION
+Regla OP_INVOCATION
+Encontro prediccion write en regla 81
+ Calling OPERATION
+Regla OPERATION
+Encontro prediccion write en regla 104
+Emparejanding write
+Emparejado write con write
+ Calling OP_PARAMETERS
+Regla OP_PARAMETERS
+Encontro prediccion ( en regla 89
+Emparejanding (
+Emparejado ( con (
+ Calling OP_PARAM_LIST
+Regla OP_PARAM_LIST
+Encontro prediccion id_token en regla 90
+ Calling IDENTIFIER
+Regla IDENTIFIER
+Encontro prediccion id_token en regla 97
+Emparejanding id_token
+Emparejado id_token con id_token
+ Calling TOKENATTR
+Regla TOKENATTR
+Encontro prediccion ) en regla 100
+Emparejanding epsilon
+ Calling NEXT_OP_PARAM
+Regla NEXT_OP_PARAM
+Encontro prediccion ) en regla 93
+Emparejanding epsilon
+Emparejanding )
+Emparejado ) con )
+ Calling SEMICOLON
+Regla SEMICOLON
+Encontro prediccion ; en regla 57
+Emparejanding ;
+Emparejado ; con ;
+ Calling R_ELEMENTS
+Regla R_ELEMENTS
+Encontro prediccion id_token en regla 16
+ Calling STATEMENT
+Regla STATEMENT
+Encontro prediccion id_token en regla 65
+ Calling SEQUENTIAL
+Regla SEQUENTIAL
+Encontro prediccion id_token en regla 76
+ Calling IDENTIFIER
+Regla IDENTIFIER
+Encontro prediccion id_token en regla 97
+Emparejanding id_token
+Emparejado id_token con id_token
+ Calling TOKENATTR
+Regla TOKENATTR
+TOKENATTR
+4 13
+ Error, no se encontro ( en el conjunto de prediccion
 

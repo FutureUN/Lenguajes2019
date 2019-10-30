@@ -449,6 +449,12 @@ void Lex(vector<string>& lines) {
 							j +=2;
 					}
 				}
+				if ( act == '+'){
+					if (line[j] == ':' && line[j+1] == '='){
+							acts += ":=";
+							j +=2;
+					}
+				}
 				if ( act == ':'){
 					if(line[j] == '='){
 						acts += line[j];	

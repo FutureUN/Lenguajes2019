@@ -58,8 +58,10 @@ col
 ... tk_triple_dot
 : tk_colon
 + tk_add
+| tk_or
 / tk_div
 mod mod	
+^ tk_pow
 * tk_multi	
 - tk_substract	
 [ tk_brace_l	
@@ -74,6 +76,7 @@ mod mod
 > tk_great_than
 <= tk_lesser_eq_than
 >= tk_greater_eq_than
++:= tk_add_assingSSS
 % tk_percent
 { tk_brack_l
 } tk_brack_r
