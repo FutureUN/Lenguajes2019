@@ -255,10 +255,17 @@ void CheckLL1Grammar() {
 	bool good = true;
 	for (auto it : predPerRule) {
 		string current = grammar[it.first].first;
+
+		if (it.second.size() == 0 ) {
+			cout << current << " " << it.first << endl;
+			cout << "Autzilio me desmayo, no tiene conjunto prediccion" << endl;
+			good = false;
+		}
+		
 		if (predNTerminal.count(current) == 0) predNTerminal[current] = it.second; 
 		else 	
 			for (auto it2 : it.second) {
-	
+				 
 				if (predNTerminal[current].find(it2) != predNTerminal[current].end()) {
 					good = false;
 					cout << current << " " << it2 << endl;
