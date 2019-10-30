@@ -252,7 +252,7 @@ void GeneratePredPerRule() {
 void CheckLL1Grammar() {
 
 	map<string, set<string>> predNTerminal;
-	bool goot = true;
+	bool good = true;
 	for (auto it : predPerRule) {
 		string current = grammar[it.first].first;
 		if (predNTerminal.count(current) == 0) predNTerminal[current] = it.second; 
