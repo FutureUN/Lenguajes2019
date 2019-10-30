@@ -1,89 +1,341 @@
-<tk_id,resource,1,1>
-<tk_id,main,1,10>
-<tk_parent_l,1,14>
-<tk_parent_r,1,15>
-<tk_id,import,2,4>
-<tk_id,sizes,2,11>
-<tk_coma,2,16>
-<tk_id,point1,2,18>
-<tk_id,var,3,4>
-<tk_id,pcap,3,8>
-<tk_brace_l,3,12>
-<tk_id,N,3,13>
-<tk_coma,3,14>
-<tk_id,N,3,15>
-<tk_brace_r,3,16>
-<tk_colon,3,17>
-<tk_id,cap,3,19>
-<tk_id,point1,3,23>
-<tk_id,fa,5,4>
-<tk_id,i,5,7>
-<tk_assig,5,9>
-<tk_num,1,5,12>
-<tk_id,to,5,14>
-<tk_id,N,5,17>
-<tk_coma,5,18>
-<tk_id,j,5,20>
-<tk_assig,5,22>
-<tk_num,1,5,25>
-<tk_id,to,5,27>
-<tk_id,N,5,30>
-<tk_execute,5,32>
-<tk_id,pcap,6,6>
-<tk_brace_l,6,10>
-<tk_id,i,6,11>
-<tk_coma,6,12>
-<tk_id,j,6,13>
-<tk_brace_r,6,14>
-<tk_assig,6,16>
-<tk_id,create,6,19>
-<tk_id,point1,6,26>
-<tk_parent_l,6,32>
-<tk_id,i,6,33>
-<tk_coma,6,34>
-<tk_id,j,6,36>
-<tk_parent_r,6,37>
-<af,7,4>
-<tk_id,fa,9,4>
-<tk_id,i,9,7>
-<tk_assig,9,9>
-<tk_num,1,9,12>
-<tk_id,to,9,14>
-<tk_id,N,9,17>
-<tk_coma,9,18>
-<tk_id,j,9,20>
-<tk_assig,9,22>
-<tk_num,1,9,25>
-<tk_id,to,9,27>
-<tk_id,N,9,30>
-<tk_execute,9,32>
-<tk_id,send,10,6>
-<tk_id,pcap,10,11>
-<tk_brace_l,10,15>
-<tk_id,i,10,16>
-<tk_coma,10,17>
-<tk_id,j,10,18>
-<tk_brace_r,10,19>
-<tk_dot,10,20>
-<tk_id,compute,10,21>
-<tk_parent_l,10,28>
-<tk_id,pcap,10,29>
-<tk_brace_l,10,33>
-<tk_id,i,10,34>
-<tk_coma,10,35>
-<tk_num,1,10,36>
-<tk_colon,10,37>
-<tk_id,N,10,38>
-<tk_brace_r,10,39>
-<tk_coma,10,40>
-<tk_id,pcap,10,42>
-<tk_brace_l,10,46>
-<tk_num,1,10,47>
-<tk_colon,10,48>
-<tk_id,N,10,49>
-<tk_coma,10,50>
-<tk_id,j,10,51>
-<tk_brace_r,10,52>
-<tk_parent_r,10,53>
-<af,11,4>
-<tk_id,end,12,1>
+[3J[H[2JSTATEMENT -> SEQUENTIAL
+STATEMENT -> OP_INVOCATION
+STATEMENT -> OP_SERVICE
+STATEMENT -> RSRC_CONTROL
+SEQUENTIAL -> skip
+SEQUENTIAL -> exit
+SEQUENTIAL -> next
+SEQUENTIAL -> if BOOL_EXP -> BLOCK SEMICOLON fi
+SEQUENTIAL -> do BOOL_EXP -> BLOCK SEMICOLON od
+SEQUENTIAL -> fa BOOL_EXP -> BLOCK SEMICOLON af
+SEQUENTIAL -> IDENTIFIER SEQUENTIAL_P
+SEQUENTIAL_P -> IDEN_LIST := EXPRESSION EXPR_LIST
+SEQUENTIAL_P -> :=: IDENTIFIER
+OP_INVOCATION -> call OPERATION PARAMETERS
+OP_INVOCATION -> OPERATION PARAMETERS
+OP_INVOCATION -> send OPERATION PARAMETERS
+OP_SERVICE -> in OPERATION (IDENTIFIERS)
+OP_SERVICE -> receive OPERATION ( IDENTIFIERS )
+OP_SERVICE -> return
+OP_SERVICE -> reply
+RSRC_CONTROL -> CAPABILITY := create resource PARAMETERS
+RSRC_CONTROL -> destroy CAPABILITY
+IDEN_LIST -> , IDENTIFIER IDEN_LIST
+IDEN_LIST -> epsilon
+EXPR_LIST -> , EXPRESSION EXPR_LIST
+EXPR_LIST -> epsilon
+BLOCK -> STATEMENTS
+STATEMENTS -> STATEMENT STATEMENTS
+STATEMENTS -> epsilon
+SEMICOLON -> ;
+SEMICOLON -> epsilon
+BOOL_EXP -> bool_exp
+EXPRESSION -> expression
+OPERATION -> operation
+IDENTIFIER -> identifier
+IDENTIFIERS -> identifiers
+EXPR_LIST -> expr_list
+Primeros por no terminal
+primeros de BLOCK
+[ call , destroy , do , epsilon , exit , fa , identifier , if , in , next , operation , receive , reply , return , send , skip , 
+primeros de BOOL_EXP
+[ bool_exp , 
+primeros de EXPRESSION
+[ expression , 
+primeros de EXPR_LIST
+[ , , epsilon , expr_list , 
+primeros de IDENTIFIER
+[ identifier , 
+primeros de IDENTIFIERS
+[ identifiers , 
+primeros de IDEN_LIST
+[ , , epsilon , 
+primeros de OPERATION
+[ operation , 
+primeros de OP_INVOCATION
+[ call , operation , send , 
+primeros de OP_SERVICE
+[ in , receive , reply , return , 
+primeros de RSRC_CONTROL
+[ destroy , 
+primeros de SEMICOLON
+[ ; , epsilon , 
+primeros de SEQUENTIAL
+[ do , exit , fa , identifier , if , next , skip , 
+primeros de SEQUENTIAL_P
+[ , , := , :=: , 
+primeros de STATEMENT
+[ call , destroy , do , exit , fa , identifier , if , in , next , operation , receive , reply , return , send , skip , 
+primeros de STATEMENTS
+[ call , destroy , do , epsilon , exit , fa , identifier , if , in , next , operation , receive , reply , return , send , skip , 
+Conjunto de siguientes por regla 
+siguientes de BLOCK
+[; , af , fi , od , ]
+siguientes de BOOL_EXP
+[-> , ]
+siguientes de CAPABILITY
+[$ , := , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de EXPRESSION
+[$ , , , ; , af , call , destroy , do , exit , expr_list , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de EXPR_LIST
+[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de IDENTIFIER
+[$ , , , := , :=: , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de IDENTIFIERS
+[) , ]
+siguientes de IDEN_LIST
+[:= , ]
+siguientes de OPERATION
+[( , (IDENTIFIERS) , ]
+siguientes de OP_INVOCATION
+[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de OP_SERVICE
+[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de PARAMETERS
+[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de RSRC_CONTROL
+[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de SEMICOLON
+[af , fi , od , ]
+siguientes de SEQUENTIAL
+[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de SEQUENTIAL_P
+[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de STATEMENT
+[$ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+siguientes de STATEMENTS
+[; , af , fi , od , ]
+ Conjunto de preduccion por regla 
+Prediccion de 0
+[ do , exit , fa , identifier , if , next , skip , ]
+Prediccion de 1
+[ call , operation , send , ]
+Prediccion de 2
+[ in , receive , reply , return , ]
+Prediccion de 3
+[ destroy , ]
+Prediccion de 4
+[ skip , ]
+Prediccion de 5
+[ exit , ]
+Prediccion de 6
+[ next , ]
+Prediccion de 7
+[ if , ]
+Prediccion de 8
+[ do , ]
+Prediccion de 9
+[ fa , ]
+Prediccion de 10
+[ identifier , ]
+Prediccion de 11
+[ , , := , ]
+Prediccion de 12
+[ :=: , ]
+Prediccion de 13
+[ call , ]
+Prediccion de 14
+[ operation , ]
+Prediccion de 15
+[ send , ]
+Prediccion de 16
+[ in , ]
+Prediccion de 17
+[ receive , ]
+Prediccion de 18
+[ return , ]
+Prediccion de 19
+[ reply , ]
+Prediccion de 20
+[ ]
+Prediccion de 21
+[ destroy , ]
+Prediccion de 22
+[ , , ]
+Prediccion de 23
+[ := , ]
+Prediccion de 24
+[ , , ]
+Prediccion de 25
+[ $ , ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+Prediccion de 26
+[ ; , af , call , destroy , do , exit , fa , fi , identifier , if , in , next , od , operation , receive , reply , return , send , skip , ]
+Prediccion de 27
+[ call , destroy , do , exit , fa , identifier , if , in , next , operation , receive , reply , return , send , skip , ]
+Prediccion de 28
+[ ; , af , fi , od , ]
+Prediccion de 29
+[ ; , ]
+Prediccion de 30
+[ af , fi , od , ]
+Prediccion de 31
+[ bool_exp , ]
+Prediccion de 32
+[ expression , ]
+Prediccion de 33
+[ operation , ]
+Prediccion de 34
+[ identifier , ]
+Prediccion de 35
+[ identifiers , ]
+Prediccion de 36
+[ expr_list , ]
+<id_token,STATEMENT,1,1>
+<tk_execute,,1,11>
+<id_token,SEQUENTIAL,1,14>
+<id_token,STATEMENT,2,1>
+<tk_execute,,2,11>
+<id_token,OP_INVOCATION,2,14>
+<id_token,STATEMENT,3,1>
+<tk_execute,,3,11>
+<id_token,OP_SERVICE,3,14>
+<id_token,STATEMENT,4,1>
+<tk_execute,,4,11>
+<id_token,RSRC_CONTROL,4,14>
+<id_token,SEQUENTIAL,6,1>
+<tk_execute,,6,12>
+<id_token,skip,6,15>
+<id_token,SEQUENTIAL,7,1>
+<tk_execute,,7,12>
+<id_token,exit,7,15>
+<id_token,SEQUENTIAL,8,1>
+<tk_execute,,8,12>
+<next,,8,15>
+<id_token,SEQUENTIAL,11,1>
+<tk_execute,,11,12>
+<if,,11,15>
+<id_token,BOOL_EXP,11,18>
+<tk_execute,,11,27>
+<id_token,BLOCK,11,30>
+<id_token,SEMICOLON,11,36>
+<fi,,11,46>
+<id_token,SEQUENTIAL,12,1>
+<tk_execute,,12,12>
+<do,,12,15>
+<id_token,BOOL_EXP,12,18>
+<tk_execute,,12,27>
+<id_token,BLOCK,12,30>
+<id_token,SEMICOLON,12,36>
+<od,,12,46>
+<id_token,SEQUENTIAL,13,1>
+<tk_execute,,13,12>
+<fa,,13,15>
+<id_token,BOOL_EXP,13,18>
+<tk_execute,,13,27>
+<id_token,BLOCK,13,30>
+<id_token,SEMICOLON,13,36>
+<af,,13,46>
+<id_token,SEQUENTIAL,14,1>
+<tk_execute,,14,13>
+<id_token,IDENTIFIER,14,16>
+<id_token,SEQUENTIAL_P,14,27>
+<id_token,SEQUENTIAL_P,15,1>
+<tk_execute,,15,15>
+<id_token,IDEN_LIST,15,18>
+<tk_assig,,15,28>
+<id_token,EXPRESSION,15,31>
+<id_token,EXPR_LIST,15,42>
+<id_token,SEQUENTIAL_P,16,1>
+<tk_execute,,16,15>
+<tk_swap,,16,18>
+<id_token,IDENTIFIER,16,22>
+<id_token,OP_INVOCATION,18,1>
+<tk_execute,,18,15>
+<call,,18,18>
+<id_token,OPERATION,18,23>
+<id_token,PARAMETERS,18,33>
+<id_token,OP_INVOCATION,19,1>
+<tk_execute,,19,15>
+<id_token,OPERATION,19,18>
+<id_token,PARAMETERS,19,28>
+<id_token,OP_INVOCATION,20,1>
+<tk_execute,,20,15>
+<send,,20,18>
+<id_token,OPERATION,20,23>
+<id_token,PARAMETERS,20,33>
+<id_token,OP_SERVICE,22,1>
+<tk_execute,,22,12>
+<in,,22,15>
+<id_token,OPERATION,22,18>
+<tk_parent_l,,22,28>
+<id_token,IDENTIFIERS,22,29>
+<tk_parent_r,,22,40>
+<id_token,OP_SERVICE,23,1>
+<tk_execute,,23,12>
+<receive,,23,15>
+<id_token,OPERATION,23,23>
+<tk_parent_l,,23,33>
+<id_token,IDENTIFIERS,23,35>
+<tk_parent_r,,23,48>
+<id_token,OP_SERVICE,24,1>
+<tk_execute,,24,12>
+<id_token,return,24,15>
+<id_token,OP_SERVICE,25,1>
+<tk_execute,,25,12>
+<reply,,25,15>
+<id_token,RSRC_CONTROL,27,1>
+<tk_execute,,27,14>
+<id_token,CAPABILITY,27,17>
+<tk_assig,,27,28>
+<create,,27,31>
+<resource,,27,38>
+<id_token,PARAMETERS,27,47>
+<id_token,RSRC_CONTROL,28,1>
+<tk_execute,,28,14>
+<destroy,,28,17>
+<id_token,CAPABILITY,28,25>
+<id_token,IDEN_LIST,31,1>
+<tk_execute,,31,11>
+<tk_coma,,31,14>
+<id_token,IDENTIFIER,31,16>
+<id_token,IDEN_LIST,31,27>
+<id_token,IDEN_LIST,32,1>
+<tk_execute,,32,11>
+<id_token,epsilon,32,14>
+<id_token,EXPR_LIST,34,1>
+<tk_execute,,34,11>
+<tk_coma,,34,14>
+<id_token,EXPRESSION,34,16>
+<id_token,EXPR_LIST,34,27>
+<id_token,EXPR_LIST,35,1>
+<tk_execute,,35,11>
+<id_token,epsilon,35,14>
+<id_token,BLOCK,37,1>
+<tk_execute,,37,7>
+<id_token,STATEMENTS,37,10>
+<id_token,STATEMENTS,39,1>
+<tk_execute,,39,12>
+<id_token,STATEMENT,39,15>
+<id_token,STATEMENTS,39,25>
+<id_token,STATEMENTS,40,1>
+<tk_execute,,40,12>
+<id_token,epsilon,40,15>
+<id_token,SEMICOLON,42,1>
+<tk_execute,,42,11>
+<tk_semicolon,,42,14>
+<id_token,SEMICOLON,43,1>
+<tk_execute,,43,11>
+<id_token,epsilon,43,14>
+<id_token,BOOL_EXP,45,1>
+<tk_execute,,45,10>
+<id_token,bool_exp,45,13>
+<id_token,EXPRESSION,46,1>
+<tk_execute,,46,12>
+<id_token,expression,46,15>
+<id_token,OPERATION,47,1>
+<tk_execute,,47,11>
+<id_token,operation,47,14>
+<id_token,IDENTIFIER,48,1>
+<tk_execute,,48,12>
+<id_token,identifier,48,15>
+<id_token,IDENTIFIERS,49,1>
+<tk_execute,,49,13>
+<id_token,identifiers,49,16>
+<id_token,EXPR_LIST,50,1>
+<tk_execute,,50,11>
+<id_token,expr_list,50,14>
+Regla STATEMENT
+STATEMENT
+1 1
+ Error tisastico, no se encontro id_token en el conjunto de prediccion porque tisa no se puede predecir <3
+
