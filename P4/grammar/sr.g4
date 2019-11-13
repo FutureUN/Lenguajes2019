@@ -32,9 +32,11 @@ r_declaration: CONST ID_TOKEN ASSIG  expression
 | TYPE ID_TOKEN ASSIG type
 | OPTYPE ID_TOKEN ASSIG '('? ID_TOKEN (COLON type)? ')'? ('returns' ID_TOKEN COLON type)?
 | OP ID_TOKEN parameters? (COMA ID_TOKEN parameters?)* (COLON type)?
-| VAR ID_TOKEN if_array (COMA ID_TOKEN if_array)*  type_def? (ASSIG assign_dec)?
+| VAR var_id type_def? (ASSIG assign_dec)?
 
 ;
+var_id : ID_TOKEN if_array (COMA ID_TOKEN if_array)* ;
+
 assign_dec:  expression (COMA assign_dec)*
 | ID_TOKEN if_array
 ;

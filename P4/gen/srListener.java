@@ -1,4 +1,4 @@
-// Generated from /home/jimmy/UNAL/UNAL/2019-2/lenguajes/Lenguajes2019/P4/grammar/sr.g4 by ANTLR 4.7.2
+// Generated from /home/sebastian/UN/lenguajes/Lenguajes2019/P4/grammar/sr.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
@@ -97,6 +97,16 @@ public interface srListener extends ParseTreeListener {
 	 */
 	void exitR_declaration(srParser.R_declarationContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link srParser#var_id}.
+	 * @param ctx the parse tree
+	 */
+	void enterVar_id(srParser.Var_idContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link srParser#var_id}.
+	 * @param ctx the parse tree
+	 */
+	void exitVar_id(srParser.Var_idContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link srParser#assign_dec}.
 	 * @param ctx the parse tree
 	 */
@@ -106,26 +116,6 @@ public interface srListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitAssign_dec(srParser.Assign_decContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link srParser#op_function}.
-	 * @param ctx the parse tree
-	 */
-	void enterOp_function(srParser.Op_functionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link srParser#op_function}.
-	 * @param ctx the parse tree
-	 */
-	void exitOp_function(srParser.Op_functionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link srParser#op_return}.
-	 * @param ctx the parse tree
-	 */
-	void enterOp_return(srParser.Op_returnContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link srParser#op_return}.
-	 * @param ctx the parse tree
-	 */
-	void exitOp_return(srParser.Op_returnContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link srParser#type_def}.
 	 * @param ctx the parse tree
@@ -167,46 +157,6 @@ public interface srListener extends ParseTreeListener {
 	 */
 	void exitBlock(srParser.BlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link srParser#identifier}.
-	 * @param ctx the parse tree
-	 */
-	void enterIdentifier(srParser.IdentifierContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link srParser#identifier}.
-	 * @param ctx the parse tree
-	 */
-	void exitIdentifier(srParser.IdentifierContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link srParser#constant}.
-	 * @param ctx the parse tree
-	 */
-	void enterConstant(srParser.ConstantContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link srParser#constant}.
-	 * @param ctx the parse tree
-	 */
-	void exitConstant(srParser.ConstantContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link srParser#type_dec}.
-	 * @param ctx the parse tree
-	 */
-	void enterType_dec(srParser.Type_decContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link srParser#type_dec}.
-	 * @param ctx the parse tree
-	 */
-	void exitType_dec(srParser.Type_decContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link srParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpression(srParser.ExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link srParser#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpression(srParser.ExpressionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link srParser#type}.
 	 * @param ctx the parse tree
 	 */
@@ -227,6 +177,36 @@ public interface srListener extends ParseTreeListener {
 	 */
 	void exitFunction_id(srParser.Function_idContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link srParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpression(srParser.ExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link srParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpression(srParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link srParser#boolvar}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolvar(srParser.BoolvarContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link srParser#boolvar}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolvar(srParser.BoolvarContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link srParser#e}.
+	 * @param ctx the parse tree
+	 */
+	void enterE(srParser.EContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link srParser#e}.
+	 * @param ctx the parse tree
+	 */
+	void exitE(srParser.EContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link srParser#statement}.
 	 * @param ctx the parse tree
 	 */
@@ -246,4 +226,14 @@ public interface srListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitOb_parameters(srParser.Ob_parametersContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link srParser#identifier}.
+	 * @param ctx the parse tree
+	 */
+	void enterIdentifier(srParser.IdentifierContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link srParser#identifier}.
+	 * @param ctx the parse tree
+	 */
+	void exitIdentifier(srParser.IdentifierContext ctx);
 }

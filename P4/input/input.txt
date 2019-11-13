@@ -1,8 +1,12 @@
-global jimmy
-   const MAXPATTERN := 20
-   type jimmy := int
+global P4
+   const VAR1 := 1000
+   const VAR2 := VAR1 + 3000 / 4500
+   type integer := int
 end
 
-resource jimmy
-    var jimmy := 4
+resource multi(a,b)
+	var temp, temp2 : int := 0, 5
+body multi( a,b :int)
+	temp := a * b
+	write(temp)
 end

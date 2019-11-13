@@ -13,7 +13,7 @@ public class MyVisitor<T> extends srBaseVisitor<T> {
     }
 
     public T visitGlobal(srParser.GlobalContext ctx) {
-        System.out.println("Profe hay un global y hay se hacen cosas globales, interpretador de resourses cuando petro sea presidente");
+
         return null;
     }
 

@@ -2,9 +2,26 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="29ef5bbb-cf8c-450f-a8f6-38cffb6f0940" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Interpreter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/MyVisitor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Translate.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/sr.interp" beforeDir="false" afterPath="$PROJECT_DIR$/gen/sr.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/sr.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/gen/sr.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srBaseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srBaseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srBaseVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammar/sr.g4" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/sr.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/input.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P4/sr.interp" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P4/sr.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P4/sr.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P4/sr.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P4/srLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P4/srLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/P4/srLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/P4/srLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/MyVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/MyVisitor.java" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,7 +60,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Interpreter">
+  <component name="RunManager" selected="Application.Translate">
     <configuration name="Interpreter" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="Interpreter" />
       <module name="P4" />
@@ -52,8 +69,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Main" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="Test" />
+    <configuration name="Translate" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="Translate" />
       <module name="P4" />
       <option name="PROGRAM_PARAMETERS" value="input/input.txt" />
       <method v="2">
@@ -61,7 +78,7 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.Translate" />
       <item itemvalue="Application.Interpreter" />
     </list>
   </component>

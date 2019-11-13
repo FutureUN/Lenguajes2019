@@ -1,4 +1,4 @@
-// Generated from /home/jimmy/UNAL/UNAL/2019-2/lenguajes/Lenguajes2019/P4/grammar/sr.g4 by ANTLR 4.7.2
+// Generated from /home/sebastian/UN/lenguajes/Lenguajes2019/P4/grammar/sr.g4 by ANTLR 4.7.2
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
 /**
@@ -64,23 +64,17 @@ public interface srVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitR_declaration(srParser.R_declarationContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link srParser#var_id}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVar_id(srParser.Var_idContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link srParser#assign_dec}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitAssign_dec(srParser.Assign_decContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link srParser#op_function}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOp_function(srParser.Op_functionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link srParser#op_return}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitOp_return(srParser.Op_returnContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link srParser#type_def}.
 	 * @param ctx the parse tree
@@ -106,30 +100,6 @@ public interface srVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(srParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link srParser#identifier}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitIdentifier(srParser.IdentifierContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link srParser#constant}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitConstant(srParser.ConstantContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link srParser#type_dec}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitType_dec(srParser.Type_decContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link srParser#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpression(srParser.ExpressionContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link srParser#type}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -142,6 +112,24 @@ public interface srVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitFunction_id(srParser.Function_idContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link srParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpression(srParser.ExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link srParser#boolvar}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolvar(srParser.BoolvarContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link srParser#e}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitE(srParser.EContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link srParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -153,4 +141,10 @@ public interface srVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitOb_parameters(srParser.Ob_parametersContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link srParser#identifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(srParser.IdentifierContext ctx);
 }
