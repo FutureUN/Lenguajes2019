@@ -3,7 +3,7 @@ grammar sr;
 init: global? resource+ ;
 
 global: 'global' ID_TOKEN global_content  END;
-resource: 'resource' ID_TOKEN parameters? r_elements  END? ;
+resource: 'resource' ID_TOKEN parameters? r_elements  END? body?;
 body: 'body' ID_TOKEN? parameters? r_elements END;
 global_content:  (constant SEMICOLON )+  global_content | (r_declaration SEMICOLON)+ global_content;
 parameters: '('param_list? ( SEMICOLON? COMA?  param_list)*')' ;
@@ -17,10 +17,8 @@ r_elements: 'extend' ID_TOKEN (COMA ID_TOKEN)* r_elements?
 | 'proc' ID_TOKEN parameters block END r_elements?
 | 'procedure' ID_TOKEN parameters block END r_elements?
 | r_declaration r_elements?
-| function_id ('(' identifier if_array? (COMA identifier if_array?)* ')')? SEMICOLON?   END? r_elements?
-| function_id '('')'
+| function_id parameters SEMICOLON?   END?
 | statement  r_elements?
-| body?
 ;
 
 r_declaration: 'const' ID_TOKEN ASSIG  expression
@@ -113,7 +111,7 @@ BRACK_L: '{';
 BRACK_R: '}';
 
 ID_TOKEN: [a-zA-Z]+[a-zA-Z0-9_]* ;
-
+LINE_COMMENT 	: '#' ~[\n]* -> skip;
 
 
 
