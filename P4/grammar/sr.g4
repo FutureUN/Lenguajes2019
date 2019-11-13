@@ -16,9 +16,9 @@ r_elements: 'extend' ID_TOKEN (COMA ID_TOKEN)* r_elements?
 | 'import' ID_TOKEN (COMA ID_TOKEN)* r_elements?
 | 'proc' ID_TOKEN parameters block END r_elements?
 | 'procedure' ID_TOKEN parameters block END r_elements?
-| r_declaration r_elements?
+| r_declaration SEMICOLON? r_elements?
 | function_id parameters  SEMICOLON? END? r_elements?
-| statement  r_elements?
+| statement  SEMICOLON? r_elements?
 ;
 
 r_declaration: 'const' ID_TOKEN ASSIG  expression
@@ -52,13 +52,6 @@ block:  r_elements statement* ;
 
 
 
-identifier : ID_TOKEN | expression | '\'' ID_TOKEN '\'';
-
-
-constant: ID_TOKEN;
-type_dec: 'type_dec';
-
-expression: EXPRESSION | ID_TOKEN;
 
 type : 'int' | 'string' | 'cap' ID_TOKEN | 'real' | ID_TOKEN | 'char'
 | 'rec' '(' ID_TOKEN?  (COMA ID_TOKEN)*  type_def? ')'
@@ -73,7 +66,23 @@ GETARG
 | ID_TOKEN
 ;
 
+// Expression
 
+expression : expression BINOP expression
+            |expression ROP expression
+            |boolvar
+            |SINGOP boolvar
+            | e;
+
+
+boolvar : ID_TOKEN | BINID ;
+e : e MULOP e
+    | e SUMOP e
+    | DOUBLE
+    | INT
+    | PARENT_L e PARENT_R
+    | ID_TOKEN
+     ;
 
 statement :
  'skip'
@@ -91,8 +100,10 @@ statement :
 ob_parameters : '(' identifier ( COMA  identifier)*')' ;
 
 
+identifier : ID_TOKEN | expression | '\'' ID_TOKEN '\'';
+
+
 END : 'end' ;
-EXPRESSION : 'expression' | [0-9]+ (DOT [0-9])* ;
 WRITE: 'write';
 FINAL: 'final';
 GETARG: 'getarg';
@@ -102,13 +113,7 @@ DIFF: '!=';
 EQUAL: '=';
 DOT: '.';
 COLON: ':';
-ADD: '+';
 OR: '|';
-DIV: '/';
-MOD: 'mod';
-POW: '^';
-MULT: '*';
-SUBS: '-';
 BRACE_L: '[';
 BRACE_R: ']';
 COMA : ',';
@@ -117,15 +122,20 @@ PARENT_R: ')';
 SEMICOLON: ';';
 EXECUTE: '->';
 SEPARA: '[]';
-LESS_THAN: '<';
-GREAT_THAN: '>';
-LESS_EQUAL: '<=';
-GREAT_EQUAL: '>=';
 ADD_ASSIGN: '+:=';
 PERCENT: '%';
 BRACK_L: '{';
 BRACK_R: '}';
-ID_TOKEN: [a-zA-Z]+[a-zA-Z0-9_]* ;
+
+ROP : ( '<' | '<=' | '>=' | '>' | '=' | '!=' );
+MULOP : ('*' | '/' | '%' );
+SUMOP : ('+' | '-');
+BINOP : ( '&' | '|');
+SINGOP : '~';
+BINID : ('true' | 'false');
+INT:  [0-9]+;
+DOUBLE : [0-9]+([.][0-9]+);
+ID_TOKEN   : [a-zA-Z][a-zA-Z0-9_]*;
 LINE_COMMENT 	: '#' ~[\n]* -> skip;
 
 WP: [ \t\r\n] -> skip ;
