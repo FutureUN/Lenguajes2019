@@ -16,7 +16,7 @@ public class SRtoNL extends srBaseListener {
     /** Translate } to " */
     @Override
     public void exitInit(srParser.InitContext ctx) {
-        System.out.println("exit init");
+        System.out.println("Traduccion finalizada");
     }
 
     /** Translate integers to 4-digit hexadecimal strings prefixed with \\u */
@@ -63,9 +63,12 @@ public class SRtoNL extends srBaseListener {
 
         for (int i=0; i<ctx.depth()-2; i++)
             System.out.print('\t');
-        if (ctx.r_declaration() == null)
-           System.out.println("TODO :D resourse element");
-    }
+        if (ctx.function_id() != null)  {
+            System.out.println("Llamado a la funcion " + ctx.function_id().getText() + " con parametros " + ctx.parameters().getText());
+        } else if (ctx.statement() == null) {
+            System.out.println("TODO, no disponible");
+        }
+     }
 
     @Override public void enterBody(srParser.BodyContext ctx) {
         for (int i=0; i<ctx.depth()-2; i++)
@@ -81,6 +84,10 @@ public class SRtoNL extends srBaseListener {
         for (int i=0; i<ctx.depth()-2; i++)
             System.out.print('\t');
         System.out.println("Fin Declaracion del cuerpo del recurso ");
+    }
+
+    @Override public void enterStatement(srParser.StatementContext ctx) {
+        System.out.println("Asignacion de variable " + ctx.identifier().get(0).getText() + " con valor " + ctx.identifier().get(1).getText());
     }
 
 
