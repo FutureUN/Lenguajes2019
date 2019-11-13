@@ -1,10 +1,10 @@
 grammar sr;
 
-init: global? resource  body?;
+init: global? resource body?;
 
 global: 'global' ID_TOKEN global_content  END;
 resource: 'resource' ID_TOKEN parameters? r_elements  END? ;
-body: 'body' b_params r_elements END;
+body: 'body' ID_TOKEN? parameters? r_elements END;
 global_content:  (constant ';' )+  global_content | (type_dec ';')+ global_content;
 parameters: '('param_list? (',' param_list)*')' ;
 param_list:  ID_TOKEN  if_array
@@ -12,13 +12,12 @@ param_list:  ID_TOKEN  if_array
 ;
 
 
-r_elements:
-| 'extend' ID_TOKEN (',' ID_TOKEN)* r_elements?
+r_elements: 'extend' ID_TOKEN (',' ID_TOKEN)* r_elements?
 | 'import' ID_TOKEN (',' ID_TOKEN)* r_elements?
 | 'proc' ID_TOKEN parameters block END r_elements?
 | 'procedure' ID_TOKEN parameters block END r_elements?
-| r_declaration r_elements
-| function_id '(' identifier? (',' identifier) ')' ';'? r_elements?
+| r_declaration r_elements?
+| function_id ('(' identifier? (',' identifier)* ')')? ';'?  END r_elements?
 ;
 
 r_declaration: 'const' ID_TOKEN ':='  expression
@@ -37,7 +36,10 @@ op_return : 'op_return';
 
 type_def: (':' type) ;
 
-if_array: ('[' identifier (':' type)? ( ',' identifier (':' type)?)* ']')* ;
+if_array:
+ ('[' identifier (':' type)? ( ',' identifier (':' type)?)* ']')*
+ |  ('[' identifier (':' identifier)? ( ',' identifier (':' identifier)?)* ']')*
+ ;
 
 
 b_params: 'b_params' ;
@@ -62,24 +64,15 @@ type : 'int' | 'string' | 'cap' ID_TOKEN | 'real' | ID_TOKEN | 'char'
 
 
 
-function_id: 'getarg';
+function_id: 'getarg'
+| 'final'
+;
 
 END : 'end' ;
 EXPRESSION : 'expression' | [0-9]+ ('.' [0-9])* ;
 
 ID_TOKEN: [a-zA-Z]+[a-zA-Z0-9_]* ;
-GLOBAL : 'global' ;
-BODY : 'body' ;
-SEMI : ';' ;
-LPAREN : '(' ;
-RPAREN : ')' ;
-LBRACK : '[' ;
-COMMA : ',' ;
-RBRACK : ']' ;
-R_ELEMENTS : 'r_elements' ;
-B_PARAMS : 'b_params' ;
-CONSTANT : 'constant' ;
-TYPE_DEC : 'type_dec' ;
+
 
 
 statement :

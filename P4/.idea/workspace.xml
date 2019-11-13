@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="29ef5bbb-cf8c-450f-a8f6-38cffb6f0940" name="Default Changelist" comment="" />
+    <list default="true" id="29ef5bbb-cf8c-450f-a8f6-38cffb6f0940" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/sr.interp" beforeDir="false" afterPath="$PROJECT_DIR$/gen/sr.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/sr.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/gen/sr.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srBaseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srBaseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srBaseVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.interp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srVisitor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/grammar/sr.g4" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/sr.g4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/input/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/input.txt" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +30,13 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1TWIeJaetCRu31jxhxgrZl3xskz" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/input/input.txt" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -56,5 +76,16 @@
       <updated>1573569518372</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
