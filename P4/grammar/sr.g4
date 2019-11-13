@@ -7,7 +7,8 @@ resource: 'resource' ID_TOKEN parameters? r_elements  END? body?;
 body: 'body' ID_TOKEN? parameters r_elements END;
 global_content:  r_declaration SEMICOLON? global_content?;
 parameters: '('param_list? ( SEMICOLON? COMA?  param_list)*')' ;
-param_list:  identifier  if_array (COLON type)*
+param_list:   identifier  if_array (COLON type)*
+| '\'' identifier '\''
 | ID_TOKEN COLON type (SEMICOLON ID_TOKEN COLON type )*
 ;
 
@@ -104,6 +105,7 @@ identifier : ID_TOKEN | expression | '\'' ID_TOKEN '\'';
 
 
 END : 'end' ;
+
 WRITE: 'write';
 FINAL: 'final';
 GETARG: 'getarg';
