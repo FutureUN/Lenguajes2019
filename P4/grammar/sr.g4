@@ -5,7 +5,7 @@ init: global? resource+ ;
 global: 'global' ID_TOKEN global_content  END;
 resource: 'resource' ID_TOKEN parameters? r_elements  END? body?;
 body: 'body' ID_TOKEN? parameters r_elements END;
-global_content:  (constant SEMICOLON )+  global_content | (r_declaration SEMICOLON)+ global_content;
+global_content:  r_declaration SEMICOLON? global_content?;
 parameters: '('param_list? ( SEMICOLON? COMA?  param_list)*')' ;
 param_list:  identifier  if_array (COLON type)*
 | ID_TOKEN COLON type (SEMICOLON ID_TOKEN COLON type )*
@@ -22,10 +22,11 @@ r_elements: 'extend' ID_TOKEN (COMA ID_TOKEN)* r_elements?
 ;
 
 r_declaration: 'const' ID_TOKEN ASSIG  expression
-| 'type' ID_TOKEN EQUAL type
-| 'optype' ID_TOKEN EQUAL '('? ID_TOKEN (COLON type)? ')'? ('returns' ID_TOKEN COLON type)?
+| 'type' ID_TOKEN ASSIG type
+| 'optype' ID_TOKEN ASSIG '('? ID_TOKEN (COLON type)? ')'? ('returns' ID_TOKEN COLON type)?
 | 'op' ID_TOKEN parameters? (COMA ID_TOKEN parameters?)* (COLON type)?
 | 'var' ID_TOKEN if_array (COMA ID_TOKEN if_array)*  type_def? (ASSIG assign_dec)?
+| 'const'  ID_TOKEN ASSIG expression
 ;
 assign_dec:  expression (COMA assign_dec)*
 | ID_TOKEN if_array
@@ -54,7 +55,7 @@ block:  r_elements statement* ;
 identifier : ID_TOKEN | expression | '\'' ID_TOKEN '\'';
 
 
-constant: 'constant';
+constant: ID_TOKEN;
 type_dec: 'type_dec';
 
 expression: EXPRESSION | ID_TOKEN;
