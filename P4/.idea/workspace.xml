@@ -5,12 +5,15 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gen/sr.interp" beforeDir="false" afterPath="$PROJECT_DIR$/gen/sr.interp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gen/sr.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/gen/sr.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srBaseListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srBaseListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srBaseVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srBaseVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gen/srLexer.interp" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.interp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gen/srLexer.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gen/srLexer.tokens" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srLexer.tokens" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/gen/srParser.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srParser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gen/srVisitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/gen/srVisitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/grammar/sr.g4" beforeDir="false" afterPath="$PROJECT_DIR$/grammar/sr.g4" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/input/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/input/input.txt" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

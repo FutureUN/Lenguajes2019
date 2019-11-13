@@ -147,4 +147,10 @@ public interface srVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStatement(srParser.StatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link srParser#ob_parameters}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitOb_parameters(srParser.Ob_parametersContext ctx);
 }

@@ -171,4 +171,11 @@ public class srBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements srV
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
 	@Override public T visitStatement(srParser.StatementContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitOb_parameters(srParser.Ob_parametersContext ctx) { return visitChildren(ctx); }
 }
