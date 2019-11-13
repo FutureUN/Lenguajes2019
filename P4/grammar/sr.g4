@@ -5,7 +5,7 @@ init: global? resource+ ;
 global: 'global' ID_TOKEN global_content  END;
 resource: 'resource' ID_TOKEN parameters? r_elements  END? ;
 body: 'body' ID_TOKEN? parameters? r_elements END;
-global_content:  (constant SEMICOLON )+  global_content | (type_dec SEMICOLON)+ global_content;
+global_content:  (constant SEMICOLON )+  global_content | (r_declaration SEMICOLON)+ global_content;
 parameters: '('param_list? ( SEMICOLON? COMA?  param_list)*')' ;
 param_list:  ID_TOKEN  if_array (COLON type)*
 | ID_TOKEN COLON type (SEMICOLON ID_TOKEN COLON type )*
