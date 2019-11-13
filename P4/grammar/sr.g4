@@ -1,13 +1,13 @@
 grammar sr;
 
-init: global? resource body?;
+init: global? resource+ ;
 
 global: 'global' ID_TOKEN global_content  END;
 resource: 'resource' ID_TOKEN parameters? r_elements  END? ;
 body: 'body' ID_TOKEN? parameters? r_elements END;
 global_content:  (constant ';' )+  global_content | (type_dec ';')+ global_content;
-parameters: '('param_list? (',' param_list)*')' ;
-param_list:  ID_TOKEN  if_array
+parameters: '('param_list? ( ';'? ','?  param_list)*')' ;
+param_list:  ID_TOKEN  if_array (':' type)*
 | ID_TOKEN ':' type (';' ID_TOKEN ':' type )*
 ;
 
@@ -17,7 +17,10 @@ r_elements: 'extend' ID_TOKEN (',' ID_TOKEN)* r_elements?
 | 'proc' ID_TOKEN parameters block END r_elements?
 | 'procedure' ID_TOKEN parameters block END r_elements?
 | r_declaration r_elements?
-| function_id ('(' identifier? (',' identifier)* ')')? ';'?  END r_elements?
+| function_id ('(' identifier if_array? (',' identifier if_array?)* ')')? ';'?   END? r_elements?
+| function_id '('')'
+| statement  r_elements?
+| body?
 ;
 
 r_declaration: 'const' ID_TOKEN ':='  expression
@@ -46,11 +49,11 @@ b_params: 'b_params' ;
 
 
 
-block:  r_declaration* statement *  ;
+block:  r_elements statement* ;
 
 
 
-identifier : ID_TOKEN | expression ;
+identifier : ID_TOKEN | expression | '\'' ID_TOKEN '\'';
 
 
 constant: 'constant';
@@ -66,6 +69,8 @@ type : 'int' | 'string' | 'cap' ID_TOKEN | 'real' | ID_TOKEN | 'char'
 
 function_id: 'getarg'
 | 'final'
+| 'write'
+| ID_TOKEN
 ;
 
 END : 'end' ;
@@ -80,13 +85,15 @@ statement :
 | 'exit'
 | 'next'
 | 'if' expression '->' block 'fi'
-| 'fa' identifier ':=' expression 'to' identifier '->' block 'af'
+| 'fa' identifier ':=' expression 'to' identifier  (',' identifier ':=' expression 'to' identifier)* '->' block 'af'
 | identifier (',' identifier)* ':=' expression ( ',' expression)
 | identifier if_array ':=:' identifier if_array
 | identifier if_array '+:=' identifier if_array
-| identifier if_array ':=' identifier if_array
-;
 
+| identifier if_array ':=' identifier if_array
+| identifier if_array ':=' 'create' identifier ('.' identifier)* ob_parameters (';' identifier ('.' identifier)* ob_parameters)*
+;
+ob_parameters : '(' identifier ( ','  identifier)*')' ;
 
 
 TK_LPAREN: [#][a-zA-Z0-9]* -> skip ;
